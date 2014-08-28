@@ -1,163 +1,3 @@
-/**
- * This file is part of JAOB core.
- *
- * JAOB core is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * JAOB core is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with JAOB core.  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * This file is part of JAOB (Java Architecture for Owl Binding).
- *
- * JAOB (Java Architecture for Owl Binding) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * JAOB (Java Architecture for Owl Binding) is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with JAOB (Java Architecture for Owl Binding).  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * This file is part of JAOB core.
- *
- * JAOB core is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * JAOB core is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with JAOB core.  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * This file is part of JAOB (Java Architecture for Owl Binding).
- *
- * JAOB (Java Architecture for Owl Binding) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * JAOB (Java Architecture for Owl Binding) is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with JAOB (Java Architecture for Owl Binding).  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * This file is part of JAOB core.
- *
- * JAOB core is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * JAOB core is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with JAOB core.  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * This file is part of JAOB (Java Architecture for Owl Binding).
- *
- * JAOB (Java Architecture for Owl Binding) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * JAOB (Java Architecture for Owl Binding) is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with JAOB (Java Architecture for Owl Binding).  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * This file is part of JAOB core.
- *
- * JAOB core is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * JAOB core is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with JAOB core.  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * This file is part of JAOB (Java Architecture for Owl Binding).
- *
- * JAOB (Java Architecture for Owl Binding) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * JAOB (Java Architecture for Owl Binding) is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with JAOB (Java Architecture for Owl Binding).  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * This file is part of JAOB core.
- *
- * JAOB core is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * JAOB core is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with JAOB core.  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * This file is part of JAOB (Java Architecture for Owl Binding).
- *
- * JAOB (Java Architecture for Owl Binding) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * JAOB (Java Architecture for Owl Binding) is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with JAOB (Java Architecture for Owl Binding).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.yoshtec.owl.cf;
 
 import java.util.ArrayList;
@@ -169,30 +9,39 @@ import org.slf4j.LoggerFactory;
 
 import com.yoshtec.owl.Const;
 import com.yoshtec.owl.annotations.OwlClass;
+import com.yoshtec.owl.annotations.OwlClassImplementation;
 import com.yoshtec.owl.annotations.OwlOntology;
 
-final class ReflectUtil {
+public final class ReflectUtil {
 
     private static final Logger log = LoggerFactory.getLogger(ReflectUtil.class);
     
-    static IRI getClassUri(Class<?> clazz){
+    public static IRI getClassIri(Class<?> clazz){
+    	//TODO ---------- check if generation still works after modification
+    	OwlClass oc = null;
         if( clazz.isAnnotationPresent(OwlClass.class) ){
-            OwlClass oc = clazz.getAnnotation(OwlClass.class);
-            if( oc.uri().equals(Const.DEFAULT_ANNOTATION_STRING) ){
-                if( clazz.getPackage().isAnnotationPresent(OwlOntology.class) ){
-                    return IRI.create(
-                            clazz.getPackage().getAnnotation(OwlOntology.class).uri()
-                            + "#" +
-                            clazz.getSimpleName());
-                }  
-                log.error("No Ontology Uri on Package {}", clazz.getPackage() );
-            } else {
-                return IRI.create(oc.uri());
-            }
+            oc = clazz.getAnnotation(OwlClass.class);
+        }else if(clazz.isAnnotationPresent(OwlClassImplementation.class)){
+        	Class<?> impl = clazz.getAnnotation(OwlClassImplementation.class).value()[0];
+			oc = impl.getAnnotation(OwlClass.class);
         }
-        
-        return null;
+        return getIri(clazz, oc);
     }
+
+	private static IRI getIri(Class<?> clazz, OwlClass oc) {
+		if( oc.uri().equals(Const.DEFAULT_ANNOTATION_STRING) ){
+		    if( clazz.getPackage().isAnnotationPresent(OwlOntology.class) ){
+		        return IRI.create(
+		                clazz.getPackage().getAnnotation(OwlOntology.class).uri()
+		                + "#" +
+		                clazz.getSimpleName());
+		    }  
+		    log.error("No Ontology Uri on Package {}", clazz.getPackage() );
+		} else {
+		    return IRI.create(oc.uri());
+		}
+		return null;
+	}
     
     static List<Package> getSubPackages(Package p){
         List<Package> res = new ArrayList<Package>();
@@ -209,7 +58,7 @@ final class ReflectUtil {
         return res;
     }
     
-    static String getBaseUri(Package p){
+    public static String getBaseUri(Package p){
         if( p.isAnnotationPresent(OwlOntology.class) ){
             return p.getAnnotation(OwlOntology.class).uri();
         }

@@ -12,8 +12,8 @@ import com.yoshtec.owl.annotations.classes.OwlObjectUnionOf;
  * 
  */
 @OwlObjectUnionOf(classes = {
-    "http://www.yoshtec.com/test/unionof.owl#Birne",
-    "http://www.yoshtec.com/test/unionof.owl#Apfel"
+    "http://www.yoshtec.com/test/unionof.owl#Apfel",
+    "http://www.yoshtec.com/test/unionof.owl#Birne"
 })
 @OwlClass(uri = "http://www.yoshtec.com/test/unionof.owl#Malodiea")
 public interface Malodiea {

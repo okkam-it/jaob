@@ -1,4 +1,3 @@
-
 package com.yoshtec.owl.jcodegen;
 
 import java.io.File;

@@ -13,8 +13,8 @@ import com.yoshtec.owl.annotations.classes.OwlSubclassOf;
  */
 @OwlClass(uri = "http://www.yoshtec.com/test/unionof.owl#Apfel")
 @OwlSubclassOf({
-    @OwlClass(uri = "http://www.yoshtec.com/test/unionof.owl#Malodiea"),
-    @OwlClass(uri = "http://www.w3.org/2002/07/owl#Thing")
+    @OwlClass(uri = "http://www.w3.org/2002/07/owl#Thing"),
+    @OwlClass(uri = "http://www.yoshtec.com/test/unionof.owl#Malodiea")
 })
 public interface Apfel
     extends Malodiea, Thing
