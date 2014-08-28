@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns="http://www.yoshtec.com/ontology/test/matryoshka#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:p1="http://www.owl-ontologies.com/assert.owl#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xml:base="http://www.yoshtec.com/ontology/test/matryoshka">
+  <owl:Ontology rdf:about=""/>
+  <owl:Class rdf:ID="Matryoshka">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="Size"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:about="#Size">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdfs:domain rdf:resource="#Matryoshka"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="Color">
+    <rdfs:domain rdf:resource="#Matryoshka"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:TransitiveProperty rdf:ID="Contained_in">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="#Matryoshka"/>
+    <rdfs:domain rdf:resource="#Matryoshka"/>
+    <owl:inverseOf>
+      <owl:TransitiveProperty rdf:ID="Contains"/>
+    </owl:inverseOf>
+  </owl:TransitiveProperty>
+  <owl:TransitiveProperty rdf:about="#Contains">
+    <owl:inverseOf rdf:resource="#Contained_in"/>
+    <rdfs:domain rdf:resource="#Matryoshka"/>
+    <rdfs:range rdf:resource="#Matryoshka"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:TransitiveProperty>
+  <Matryoshka rdf:ID="DarthVader">
+    <Size rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+    >10</Size>
+    <Contains>
+      <Matryoshka rdf:ID="AnakinSkywalker">
+        <Contained_in rdf:resource="#DarthVader"/>
+        <Color rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >Brown</Color>
+        <Size rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >9</Size>
+      </Matryoshka>
+    </Contains>
+    <Color rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Black</Color>
+  </Matryoshka>
+</rdf:RDF>
+
+<!-- Created with Protege (with OWL Plugin 3.4, Build 128)  http://protege.stanford.edu -->

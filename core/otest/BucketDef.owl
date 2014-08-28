@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY owl2 "http://www.w3.org/2006/12/owl2#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.yoshtec.com/ontology/test/Bucket#"
+     xml:base="http://www.yoshtec.com/ontology/test/Bucket"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl2="http://www.w3.org/2006/12/owl2#">
+    <owl:Ontology rdf:about=""/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/Bucket#Contains -->
+
+    <owl:ObjectProperty rdf:about="#Contains">
+        <rdfs:domain rdf:resource="#Bucket"/>
+        <rdfs:range rdf:resource="#Stone"/>
+        <rdfs:range rdf:resource="#Stuff"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/Bucket#is_in_Bucket -->
+
+    <owl:ObjectProperty rdf:about="#is_in_Bucket">
+        <rdfs:range rdf:resource="#Bucket"/>
+        <rdfs:domain rdf:resource="#Stone"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/Bucket#DateFound -->
+
+    <owl:DatatypeProperty rdf:about="#DateFound">
+        <rdfs:range rdf:resource="&xsd;dateTime"/>
+        <rdfs:domain rdf:resource="#Stone"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/Bucket#Engraving -->
+
+    <owl:DatatypeProperty rdf:about="#Engraving">
+        <rdfs:range rdf:resource="&xsd;string"/>
+        <rdfs:domain rdf:resource="#Bucket"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/Bucket#Material -->
+
+    <owl:DatatypeProperty rdf:about="#Material">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+        <rdfs:domain rdf:resource="#Bucket"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/Bucket#weight -->
+
+    <owl:DatatypeProperty rdf:about="#weight">
+        <rdfs:range rdf:resource="&xsd;int"/>
+        <rdfs:domain rdf:resource="#Stone"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/Bucket#Bucket -->
+
+    <owl:Class rdf:about="#Bucket">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/Bucket#Material -->
+
+    <owl:Class rdf:about="#Material">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/Bucket#Stone -->
+
+    <owl:Class rdf:about="#Stone">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/Bucket#Stuff -->
+
+    <owl:Class rdf:about="#Stuff">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+</rdf:RDF>

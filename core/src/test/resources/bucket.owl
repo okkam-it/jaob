@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns="http://www.yoshtec.com/ontology/test/Bucket#"
+  xml:base="http://www.yoshtec.com/ontology/test/Bucket">
+  <owl:Ontology rdf:about=""/>
+  <owl:Class rdf:ID="Stone">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="DateFound"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="weight"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="is_in_Bucket"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
+  <owl:Class rdf:ID="Bucket">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="Material"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
+  <owl:Class rdf:ID="Stuff">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Could be anything</rdfs:comment>
+  </owl:Class>
+  <owl:ObjectProperty rdf:ID="Contains">
+    <rdfs:domain rdf:resource="#Bucket"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#is_in_Bucket"/>
+    </owl:inverseOf>
+    <rdfs:range>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Stone"/>
+          <owl:Class rdf:about="#Stuff"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:range>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#is_in_Bucket">
+    <owl:inverseOf rdf:resource="#Contains"/>
+    <rdfs:range rdf:resource="#Bucket"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Stone"/>
+          <owl:Class rdf:about="#Stuff"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:ID="Engraving">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#Bucket"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Some engraved Text on the Bucket</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="#Material">
+    <rdfs:domain rdf:resource="#Bucket"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The Material the Bucket is made of Plastik, Iron, Gold etc.</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="#DateFound">
+    <rdfs:domain rdf:resource="#Stone"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The Date this stone was found</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="description">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#Stuff"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="#weight">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >weight of the stone in gramm</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdfs:domain rdf:resource="#Stone"/>
+  </owl:DatatypeProperty>
+  <Stone rdf:ID="Suiseki">
+    <weight rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+    >5000</weight>
+    <DateFound rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2008-03-23T21:08:25.187+01:00</DateFound>
+    <is_in_Bucket>
+      <Bucket rdf:ID="MyPrecious">
+        <Contains>
+          <Stuff rdf:ID="Paper">
+            <is_in_Bucket rdf:resource="#MyPrecious"/>
+          </Stuff>
+        </Contains>
+        <Contains>
+          <Stone rdf:ID="Pebble">
+            <is_in_Bucket rdf:resource="#MyPrecious"/>
+            <weight rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+            >80</weight>
+            <DateFound rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+            >2008-03-23T21:08:25.185+01:00</DateFound>
+          </Stone>
+        </Contains>
+        <Contains rdf:resource="#Suiseki"/>
+        <Material rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >Copper</Material>
+        <Engraving rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >One Bucket to carry them all</Engraving>
+      </Bucket>
+    </is_in_Bucket>
+  </Stone>
+</rdf:RDF>
+
+<!-- Created with Protege (with OWL Plugin 3.4, Build 128)  http://protege.stanford.edu -->

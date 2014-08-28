@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY p1 "#" >
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY owl2 "http://www.w3.org/2006/12/owl2#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY matryoshka "http://www.yoshtec.com/ontology/test/matryoshka#" >
+]>
+
+
+<rdf:RDF xmlns="MatryoshkaInds.owl#"
+     xml:base="MatryoshkaInds.owl"
+     xmlns:matryoshka="http://www.yoshtec.com/ontology/test/matryoshka#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:p1="#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl2="http://www.w3.org/2006/12/owl2#">
+    <owl:Ontology rdf:about="">
+        <owl:imports rdf:resource="http://www.yoshtec.com/ontology/test/matryoshka"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/matryoshka#Contained_in -->
+
+    <owl:ObjectProperty rdf:about="&matryoshka;Contained_in"/>
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/matryoshka#Contains -->
+
+    <owl:ObjectProperty rdf:about="&matryoshka;Contains"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- #name -->
+
+    <owl:DatatypeProperty rdf:about="#name"/>
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/matryoshka#Color -->
+
+    <owl:DatatypeProperty rdf:about="&matryoshka;Color"/>
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/matryoshka#Size -->
+
+    <owl:DatatypeProperty rdf:about="&matryoshka;Size"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/matryoshka#Matryoshka -->
+
+    <owl:Class rdf:about="&matryoshka;Matryoshka"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- #AnakinSkywalker -->
+
+    <matryoshka:Matryoshka rdf:about="#AnakinSkywalker">
+        <matryoshka:Size rdf:datatype="&xsd;int">9</matryoshka:Size>
+        <p1:name rdf:datatype="&xsd;string">AnakinSkywalker</p1:name>
+        <matryoshka:Color rdf:datatype="&xsd;string">Brown</matryoshka:Color>
+        <matryoshka:Contained_in rdf:resource="#DarthVader"/>
+    </matryoshka:Matryoshka>
+    
+
+
+    <!-- #DarthVader -->
+
+    <matryoshka:Matryoshka rdf:about="#DarthVader">
+        <matryoshka:Size rdf:datatype="&xsd;int">10</matryoshka:Size>
+        <matryoshka:Color rdf:datatype="&xsd;string">Black</matryoshka:Color>
+        <p1:name rdf:datatype="&xsd;string">DarthVader</p1:name>
+        <matryoshka:Contains rdf:resource="#AnakinSkywalker"/>
+    </matryoshka:Matryoshka>
+</rdf:RDF>
