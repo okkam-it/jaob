@@ -127,7 +127,7 @@
 				</configuration>
 				<executions>
 					<execution>
-						<phase>generate-sources</phase>
+<!-- 						<phase>generate-sources</phase> -->
 						<goals>
 							<goal>remove</goal>
 <!-- 							<goal>format</goal> -->
