@@ -163,7 +163,7 @@ public enum XsdType {
 	 */
 	public static XsdType fromIri(IRI uri){
 		if("http://www.w3.org/2000/01/rdf-schema#Literal".equals(uri.toString())){
-			return XsdType.STRING;//TODO porcata
+			return XsdType.STRING;//TODO ---- porcata
 		}
 		for(XsdType x : XsdType.values()){
 			if(x.uri.equals(uri) || x.urialt.equals(uri)){

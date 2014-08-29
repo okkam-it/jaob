@@ -39,7 +39,6 @@ import org.slf4j.LoggerFactory;
 
 import com.yoshtec.owl.XsdType;
 import com.yoshtec.owl.XsdTypeMapper;
-import com.yoshtec.owl.annotations.OwlConstant;
 import com.yoshtec.owl.cf.ClassFacade;
 import com.yoshtec.owl.cf.ClassFacadeFactory;
 import com.yoshtec.owl.cf.PropertyAccessor;
@@ -199,11 +198,18 @@ public class Marshaller {
 		
 	}
 	
-
-	public OWLOntology marshal(Collection<?> objects, IRI ontologyUri, Writer output) throws MarshalException {
-		return this.marshal(objects, ontologyUri, output, true);
-	}
-	
+	/**
+	 * 
+	 * Creates an ontology (ABOX). Marshalls the Objects passed and saves the Ontology in the passed Writer
+	 * 
+	 * @param objects Objects to be saved to the ontology
+	 * @param ontologyUri The IRI of the Ontologyto
+	 * @param output the Wruter to save the Ontology to, e.g. BufferedWriter
+	 * @param deep if the object graph should be traversed or not, if it is not traversed only the uris of the
+	 * object Properties will be filled in.
+	 * @return the newly created Ontology 
+	 * @throws MarshalException if the marshalling failed
+	 */
 	public OWLOntology marshal(Collection<?> objects, IRI ontologyURI, Writer output, boolean deep) throws MarshalException {
 		if(ontologyURI == null)
 			throw new IllegalArgumentException("No ontologyURI specified");

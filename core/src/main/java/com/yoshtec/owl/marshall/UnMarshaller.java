@@ -1,5 +1,6 @@
 package com.yoshtec.owl.marshall;
 
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -154,6 +155,16 @@ public final class UnMarshaller {
 			onto = manager.loadOntologyFromOntologyDocument(physicalUri);
 		} catch (OWLOntologyCreationException e) {
 			throw new UnmarshalException("Error opening Ontology " + physicalUri, e);
+		}
+		return this.unmarshal(onto);
+	}
+	
+	public Collection<Object> unmarshal(InputStream is) throws UnmarshalException {
+		OWLOntology onto;
+		try {
+			onto = manager.loadOntologyFromOntologyDocument(is);
+		} catch (OWLOntologyCreationException e) {
+			throw new UnmarshalException("Error opening Ontology from InputStream", e);
 		}
 		return this.unmarshal(onto);
 	}

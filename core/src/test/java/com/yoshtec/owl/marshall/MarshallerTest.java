@@ -47,13 +47,13 @@ public class MarshallerTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testError3() throws Exception {
 		Marshaller m = new Marshaller();
-		m.marshal(null, (OWLOntology)null);
+		m.marshal(null, (OWLOntology)null, true);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testError4() throws Exception {
 		Marshaller m = new Marshaller();
-		m.marshal(null, IRI.create("ahkaks"), (Writer)null);
+		m.marshal(null, IRI.create("ahkaks"), (Writer)null, true);
 	}
 	
 }

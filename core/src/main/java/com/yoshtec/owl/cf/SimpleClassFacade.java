@@ -221,7 +221,7 @@ class SimpleClassFacade<T> extends BaseCF<T> implements ClassFacade {
             } 
             
             if( typeMapper.getXsdType(cl) != null ){
-                ptype = PropertyType.DATA;
+                ptype = PropertyType.ID;
             }
             log.debug("Suspecting {} to be a {} - Property", field.toGenericString(), ptype);
             
