@@ -350,6 +350,15 @@ public final class UnMarshaller {
 		
 		if(type.isAssignableFrom(Float.class))
 			return Float.parseFloat(literal);
+		
+		if(type.isAssignableFrom(Boolean.class))
+			return Boolean.parseBoolean(literal);
+		
+		if(type.isAssignableFrom(Double.class))
+			return Double.parseDouble(literal);
+		
+		if(type.isAssignableFrom(Long.class))
+			return Long.parseLong(literal);
 
 		return null;
 	}
