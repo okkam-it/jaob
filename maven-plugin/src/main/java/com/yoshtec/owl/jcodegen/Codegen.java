@@ -48,6 +48,7 @@ import org.semanticweb.owlapi.model.OWLProperty;
 import org.semanticweb.owlapi.model.OWLPropertyRange;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
+import org.semanticweb.owlapi.util.NonMappingOntologyIRIMapper;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -170,6 +171,7 @@ public class Codegen {
 			// Set up a mapping, which maps the ontology IRI to the physical IRI
 			SimpleIRIMapper mapper = new SimpleIRIMapper(ontologyIRI, physicalIRI);
 			manager.addIRIMapper(mapper);
+//			manager.addIRIMapper(new NonMappingOntologyIRIMapper());
 		
 			log.debug("Attempting to load Ontology (IRI={}) from physical IRI={}",ontologyIRI, physicalIRI);
 			
@@ -384,7 +386,8 @@ public class Codegen {
 		 * Random order so we have to first generate all classes and then 
 		 * look for the Hierarchy 
 		 */
-		Set<OWLClass> classesInSignature = ontology.getClassesInSignature();
+		boolean includeImportsClosure = true;
+		Set<OWLClass> classesInSignature = ontology.getClassesInSignature(includeImportsClosure);
 		for(OWLClass ocls : classesInSignature){
 		
 			// basically OWL classes map "best" to Java Interfaces
@@ -396,6 +399,7 @@ public class Codegen {
 			String name = (ocls.isOWLThing() ? owlthingclassname : ocls.getIRI().getFragment().toString());
 			JInterfaceProxy jinterface = new JInterfaceProxy(name, jpack, generateInterfaces, javaClassSuffix);
 
+			log.info("Adding JInterfaceProxy for class {}", name);
 			interfaces.put(name, jinterface);
 
 			// add some Annotations
@@ -415,7 +419,7 @@ public class Codegen {
 			}
 			
 			// Type Hierarchy build Subclasses Connection
-			for(OWLClassExpression odesc : ocls.getSubClasses(ontology)){
+			for(OWLClassExpression odesc : ocls.getSubClasses(ontology.getImportsClosure())){
 				
 				JInterfaceProxy ljinterface = getInterface(odesc);
 				
@@ -430,7 +434,7 @@ public class Codegen {
 		for( final OWLClass ocls : classesInSignature){
 		    final JInterfaceProxy jinterface = getInterface(ocls);
 		    
-		    for( final OWLClassExpression odesc : ocls.getEquivalentClasses(ontology) ){
+		    for( final OWLClassExpression odesc : ocls.getEquivalentClasses(ontology.getImportsClosure()) ){
 		        OWLClassExpressionVisitor vis = new OWLClassExpressionVisitor(){
 
                     @Override
@@ -599,17 +603,17 @@ public class Codegen {
 		
 		log.debug("Property: {} \t {}", prop.getClass(), prop);
 		
-		Set<OWLClassExpression> domains = prop.getDomains(ontology);
+		Set<OWLClassExpression> domains = prop.getDomains(ontology.getImports());
 		if(domains.isEmpty()){
 			// if it is not associated with a special class
 			// than it can be used at owl:Thing level
-			log.debug("  Domain: \t\t owl:Thing");
+			log.trace("\t\t Domain: owl:Thing");
 			this.addProperty(prop, interfaces.get(owlthingclassname), type);
 		} else {
 			// for each included class Methods have to be generated
 			for(OWLClassExpression odes : domains){
 				
-				log.debug("  Domain: \t\t {}",odes);
+				log.trace("\t\t Domain: {}",odes);
 				
 				// all associated classes will be added
 				for(OWLClass ocls : OntologyUtil.getOWLClasses(odes)){
@@ -646,7 +650,7 @@ public class Codegen {
 		jprop.setPropUri(prop.getIRI().toURI());
 		
 		// has this Property a Range?
-		Set<? extends OWLPropertyRange> ranges = prop.getRanges(ontology);
+		Set<? extends OWLPropertyRange> ranges = prop.getRanges(ontology.getImportsClosure());
 		
 		// if there is no Range we can save some time
 		if(!ranges.isEmpty()){
@@ -761,7 +765,7 @@ public class Codegen {
 					}
 				}
 			};
-			log.debug("Annotation: {}", oa.toString());
+			log.debug("Found annotation: {}", oa.toString());
 			oa.accept(v);
 		}
 	}
@@ -883,9 +887,6 @@ public class Codegen {
 					// add the annotation
 					boolean isComment = node.getProperty().isComment();
 					String dturi = node.getProperty().getIRI().toString();
-//					iface.addAnnotation(iri.toURI(), content, dturi, isComment );
-					// TODO Auto-generated method stub
-					System.out.println(node);
 					iface.addAnnotation(iri.toURI(), content, dturi, isComment);
 				}
 			};

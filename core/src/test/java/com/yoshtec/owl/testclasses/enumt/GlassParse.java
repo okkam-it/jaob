@@ -1,6 +1,7 @@
 package com.yoshtec.owl.testclasses.enumt;
 
 import java.io.File;
+import java.util.Set;
 
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -48,8 +49,8 @@ public class GlassParse {
         
         
         OWLOntology ontology = manager.loadOntologyFromOntologyDocument((new File("test/Glass1.owl")));
-
-        for(OWLClass cl : ontology.getClassesInSignature() ){
+        boolean includeImportsClosure = true;
+        for(OWLClass cl : ontology.getClassesInSignature(includeImportsClosure) ){
             log.debug("Class {}", cl);
             
             for(OWLClassExpression cl2 : cl.getEquivalentClasses(ontology)){

@@ -54,7 +54,6 @@ public class JaobOwl2JavaMojo extends AbstractMojo {
 	
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		StaticLoggerBinder.getSingleton().setLog(getLog());
 		try {
 			final Path outputPath = output.toPath();
 			Path outputDir = Files.createDirectories(outputPath);
