@@ -1,7 +1,6 @@
 package com.yoshtec.owl.jcodegen;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.Assert.fail;
 
 import com.sun.codemodel.JAnnotationArrayMember;
 import com.sun.codemodel.JCodeModel;

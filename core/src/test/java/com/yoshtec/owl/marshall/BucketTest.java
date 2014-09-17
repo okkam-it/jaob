@@ -1,7 +1,6 @@
 package com.yoshtec.owl.marshall;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.GregorianCalendar;

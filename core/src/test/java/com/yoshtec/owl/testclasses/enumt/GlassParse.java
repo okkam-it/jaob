@@ -1,7 +1,6 @@
 package com.yoshtec.owl.testclasses.enumt;
 
 import java.io.File;
-import java.util.Set;
 
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;

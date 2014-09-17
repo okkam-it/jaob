@@ -1,7 +1,5 @@
 package com.yoshtec.owl;
 
-import java.net.URI;
-
 import org.semanticweb.owlapi.model.IRI;
 
 /**
