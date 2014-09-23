@@ -682,7 +682,8 @@ public class Codegen {
 		String fragment = prop.getIRI().getFragment();
 		StringBuffer pName = new StringBuffer(fragment.toString()); 
 		pName.setCharAt(0, Character.toLowerCase(pName.charAt(0)));
-		jprop.setName(pName.toString());
+		String propName = toCamelCase(pName.toString());
+		jprop.setName(propName);
 
 		// Property Type
 		jprop.setPtype(type);
@@ -690,7 +691,7 @@ public class Codegen {
 		// Functional?
 		boolean functional = prop.isFunctional(ontology);
 		jprop.setFunctional(functional);
-		log.debug("  Adding Property {}{} to Class {}", new Object[] { prop,
+		log.debug("  Adding Property {} [{}]{} to Class {}", new Object[] {propName, prop.getIRI(),
 				(functional ? "*" : ""), iface.name() });
 
 		// Property IRI
@@ -814,6 +815,27 @@ public class Codegen {
 			log.debug("Found annotation: {}", oa.toString());
 			oa.accept(v);
 		}
+	}
+
+	private String toCamelCase(String value) {
+		StringBuilder sb = new StringBuilder();
+		value = value.replaceAll("_", "-");
+		final char delimChar = '-';
+		boolean upperCaseNext = false;
+		for (int charInd = 0; charInd < value.length(); ++charInd) {
+			char valueChar = value.charAt(charInd);
+			if (valueChar == delimChar) {
+				//do not add the '-' char
+				upperCaseNext = true;
+			}else{
+				if(upperCaseNext){
+					valueChar = Character.toUpperCase(valueChar);
+					upperCaseNext = false;
+				}
+				sb.append(valueChar);
+			}
+		}
+		return sb.toString();
 	}
 
 	/**
