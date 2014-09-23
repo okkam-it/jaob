@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
@@ -40,6 +41,8 @@ public class JaobOwl2JavaMojo extends AbstractMojo {
 	
 	@Parameter(property = "generateIdField", defaultValue = "false")
 	private boolean generateIdField;
+	@Parameter(property = "ignoredProperties")
+	private List<String> ignoredProperties;
 	@Parameter(property = "idFieldName", defaultValue = "id")
 	private String idFieldName;
 	
@@ -67,6 +70,9 @@ public class JaobOwl2JavaMojo extends AbstractMojo {
 			// Ontology loading parameters
 			codegen.setOntologyIri(ontologyNs);
 			codegen.setOntologyPhysicalIri(ontologyUri);
+			if(ignoredProperties!=null){
+				codegen.setIgnoreProperties(ignoredProperties);
+			}
 			
 			// where to write the source to
 			codegen.setJavaSourceFolder(outputDir.toFile());

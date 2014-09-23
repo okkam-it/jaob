@@ -2,7 +2,9 @@ package com.yoshtec.owl.jcodegen;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -142,6 +144,9 @@ public class Codegen {
 
 	/** holds the interfaces and the Properties */
 	private Map<String, JInterfaceProxy> interfaces = new HashMap<String, JInterfaceProxy>();
+
+	
+	private List<String> ignoreProperties = new ArrayList<>();
 
 	/**
 	 * Creates a new Code Generator.
@@ -640,13 +645,15 @@ public class Codegen {
 	private void addProperties(OWLProperty<?, ?> prop, PropertyType type) {
 
 		log.debug("Property: {} \t {}", prop.getClass(), prop);
+		if(ignoreProperties.contains(prop.getIRI().toString())){
+			log.warn("\t\t Ignoring blacklisted property {}",prop.getIRI().toString());
+			return;
+		}
 
-		Set<OWLClassExpression> domains = prop
-				.getDomains(ontology.getImports());
+		Set<OWLClassExpression> domains = prop.getDomains(ontology.getImportsClosure());
 		if (domains.isEmpty()) {
-			// if it is not associated with a special class
-			// than it can be used at owl:Thing level
-			log.trace("\t\t Domain: owl:Thing");
+			// if it is not associated with a special class than it can be used at owl:Thing level
+			log.warn("\t\t Property {} has empty domain; bounding to default class (Thing)", prop.getIRI());
 			this.addProperty(prop, interfaces.get(owlthingclassname), type);
 		} else {
 			// for each included class Methods have to be generated
@@ -689,10 +696,11 @@ public class Codegen {
 		// Property IRI
 		jprop.setPropUri(prop.getIRI().toURI());
 
-		// has this Property a Range?
-		Set<? extends OWLPropertyRange> ranges = prop.getRanges(ontology
-				.getImportsClosure());
-
+		// has this Property a Range? look first if overridden
+		Set<? extends OWLPropertyRange> ranges = prop.getRanges(ontology);
+		if (ranges.isEmpty()) {
+			ranges = prop.getRanges(ontology.getImportsClosure());
+		}
 		// if there is no Range we can save some time
 		if (!ranges.isEmpty()) {
 
@@ -1107,5 +1115,9 @@ public class Codegen {
 	 */
 	public void setObjectFactoryName(String objectFactoryName) {
 		this.objectFactoryName = objectFactoryName;
+	}
+
+	public void setIgnoreProperties(List<String> ignoreProperties) {
+		this.ignoreProperties = ignoreProperties;
 	}
 }
