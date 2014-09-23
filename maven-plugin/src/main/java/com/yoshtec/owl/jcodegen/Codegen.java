@@ -418,10 +418,19 @@ public class Codegen {
 			JInterfaceProxy jinterface = getInterface(ocls);
 
 			// check for multiple inheritance
-			if (ocls.getSuperClasses(ontology).size() > 1
+			Set<OWLClassExpression> superClasses = ocls.getSuperClasses(ontology);
+			if (superClasses.size() > 1
 					&& !this.generateInterfaces) {
 				throw new CodegenException(
 						"Unable to create Classes with multiple inheritance. \n Use Interfaces via the generateInterfaces option.");
+			}
+			if (superClasses.size() == 0) {
+				JInterfaceProxy thingInterface = interfaces.get(owlthingclassname);
+				if(!thingInterface.equals(jinterface)){
+					log.info("Adding default subclassing of Thing for level 1 class {}",ocls.getIRI());
+					// Subinterface them
+					jinterface.addIntersection(thingInterface);
+				}
 			}
 
 			// Type Hierarchy build Subclasses Connection
@@ -619,11 +628,6 @@ public class Codegen {
 			prop.setBaseType(jmodel._ref(String.class));
 			prop.setFunctional(true);
 			prop.setName(this.idFieldName);
-
-			for (JInterfaceProxy jiface : interfaces.values()) {
-				jiface.addProperty(prop);
-			}
-
 			this.interfaces.get(this.owlthingclassname).addProperty(prop);
 		}
 

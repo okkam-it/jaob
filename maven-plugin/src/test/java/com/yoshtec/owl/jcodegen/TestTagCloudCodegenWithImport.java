@@ -23,8 +23,6 @@ public class TestTagCloudCodegenWithImport {
 		codegen.setOntologyIri("http://models.okkam.org/tagcloud/user");
 		codegen.setOntologyPhysicalIri( "http://models.okkam.org/tagcloud/user.owl");
 		List<String> ignoreProperties = new ArrayList<>();
-		ignoreProperties.add("http://purl.org/swum#self-esteem");
-		ignoreProperties.add("http://purl.org/swum#self-respect");
 		ignoreProperties.add(OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI().toString());
 		codegen.setIgnoreProperties(ignoreProperties);
 		
