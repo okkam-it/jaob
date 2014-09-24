@@ -370,7 +370,8 @@ import com.yoshtec.owl.util.OntologyUtil;
 		JMethod creator = factory.method(JMod.PUBLIC, returntype, Const.CREATE_PREFIX + name);
 
 		// result: return new ClassName
-		creator.body()._return(JExpr._new(this.getImplementation()));
+		JDefinedClass impl = this.getImplementation();
+		creator.body()._return(JExpr._new(impl));
 		
 		creator.javadoc().add("Create an instance of {@link " + returntype.name() + "}");
 		
@@ -378,10 +379,9 @@ import com.yoshtec.owl.util.OntologyUtil;
 		if( this.idProperty != null ){
 			JMethod idcreator = factory.method(JMod.PUBLIC, returntype, Const.CREATE_PREFIX + name);
 			idcreator.param(String.class, idProperty.getName());
-			JInvocation newidclass = JExpr._new(this.getImplementation());
+			JInvocation newidclass = JExpr._new(impl);
+			newidclass=newidclass.arg(JExpr.ref(idProperty.getName()));
 			idcreator.body()._return(newidclass);
-			
-			
 			
 			creator.javadoc().add("Create an instance of {@link " + returntype.name() + "}");
 			creator.javadoc().addParam(idProperty.getName()).add("the name of this Object");

@@ -438,9 +438,12 @@ public class Codegen {
 			String superClassFullName = jinterface.fullName();
 			for (OWLClassExpression odesc : subClasses) {
 
-				JInterfaceProxy ljinterface = getInterface(odesc);
+				final JInterfaceProxy ljinterface = getInterface(odesc);
 				String fullName = ljinterface.fullName();
 				log.debug("Java: Class {} extends {} ", fullName, superClassFullName);
+//				for(OWLAxiom indi : ((OWLClass) odesc).getReferencingAxioms(ontology)){
+//					System.out.println(indi);//TODO manage restriction on DataHasValue
+//				}
 
 				// Subinterface them
 				ljinterface._implements(jinterface);
@@ -693,7 +696,7 @@ public class Codegen {
 		jprop.setPtype(type);
 
 		// Functional?
-		boolean functional = prop.isFunctional(ontology);
+		boolean functional = prop.isFunctional(ontology.getImportsClosure());
 		jprop.setFunctional(functional);
 		log.debug("  Adding Property {} [{}]{} to Class {}", new Object[] {propName, prop.getIRI(),
 				(functional ? "*" : ""), iface.name() });
@@ -701,8 +704,11 @@ public class Codegen {
 		// Property IRI
 		jprop.setPropUri(prop.getIRI().toURI());
 
-		// has this Property a Range? look first if overridden
+		// has this Property a Range? look first if overridden (works up 2 levels..)
 		Set<? extends OWLPropertyRange> ranges = prop.getRanges(ontology);
+		if (ranges.isEmpty()) {
+			ranges = prop.getRanges(ontology.getDirectImports());
+		}
 		if (ranges.isEmpty()) {
 			ranges = prop.getRanges(ontology.getImportsClosure());
 		}
