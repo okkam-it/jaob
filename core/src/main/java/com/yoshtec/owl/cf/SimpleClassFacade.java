@@ -249,7 +249,7 @@ class SimpleClassFacade<T> extends BaseCF<T> implements ClassFacade {
 				objectProperties.put(propUri, prop);
 				break;
 			case ID:
-				log.warn("Unable to handle ID Properties at this level");
+				log.debug("Unable to handle ID Properties at this level");
 			default:
 				break;
 			}
