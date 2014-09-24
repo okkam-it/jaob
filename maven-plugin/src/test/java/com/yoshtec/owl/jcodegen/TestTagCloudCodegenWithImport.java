@@ -15,13 +15,18 @@ public class TestTagCloudCodegenWithImport {
 		
 		// the java package to create the classes in
 //		codegen.setJavaPackageName("org.tagcloud.owl.generated.artefact");
-		codegen.setJavaPackageName("org.tagcloud.owl.generated.user");
+//		codegen.setJavaPackageName("org.tagcloud.owl.generated.user");
+		codegen.setJavaPackageName("org.tagcloud.owl.generated.application");
 		
 		// Ontology loading parameters
 //		codegen.setOntologyIri("http://models.okkam.org/tagcloud/artifact");
 //		codegen.setOntologyPhysicalIri( "http://models.okkam.org/tagcloud/artefact.owl");
-		codegen.setOntologyIri("http://models.okkam.org/tagcloud/user");
-		codegen.setOntologyPhysicalIri( "http://models.okkam.org/tagcloud/user.owl");
+//		codegen.setOntologyIri("http://models.okkam.org/tagcloud/user");
+//		codegen.setOntologyPhysicalIri( "http://models.okkam.org/tagcloud/user.owl");
+		codegen.setOntologyIri("http://models.okkam.org/tagcloud/application");
+		codegen.setOntologyPhysicalIri( "http://models.okkam.org/tagcloud/application.owl");
+//		codegen.setOntologyPhysicalIri( "file:///tmp/application.owl");
+//		codegen.setOntologyPhysicalIri( "file:///tmp/user.owl");
 		List<String> ignoreProperties = new ArrayList<>();
 		ignoreProperties.add(OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI().toString());
 		codegen.setIgnoreProperties(ignoreProperties);

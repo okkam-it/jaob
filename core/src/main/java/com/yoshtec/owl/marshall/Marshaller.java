@@ -130,10 +130,6 @@ public class Marshaller {
 		this.missingObjectProps = new Stack<Object>();
 	}
 	
-	public OWLOntology marshal(Collection<?> objects, IRI ontologyUri) throws MarshalException {
-		return this.marshal(objects, ontologyUri, true);
-	}
-	
 	public OWLOntology marshal(Collection<?> objects, IRI ontologyUri, boolean deep) throws MarshalException {
 		if(ontologyUri == null)
 			throw new IllegalArgumentException("no ontology Uri set");

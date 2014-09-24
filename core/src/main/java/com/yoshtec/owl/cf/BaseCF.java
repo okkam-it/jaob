@@ -21,7 +21,7 @@ abstract class BaseCF<T> implements ClassFacade {
     protected IRI ontoBaseUri = null;
     
     /** Imported Uris from the Package */
-    protected Set<IRI> importedUris = null;
+    protected Set<IRI> importedUris = new HashSet<>();
 
     /** maps the Java classes to XsdTypes and vice versa */
     protected XsdTypeMapper typeMapper;

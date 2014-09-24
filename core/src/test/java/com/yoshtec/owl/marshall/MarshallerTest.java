@@ -35,13 +35,13 @@ public class MarshallerTest {
 		col.add(new Object());
 		
 		Marshaller m = new Marshaller();
-		m.marshal(col, IRI.create("xxxxx"));
+		m.marshal(col, IRI.create("xxxxx"),true);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testError2() throws Exception {
 		Marshaller m = new Marshaller();
-		m.marshal(null, (IRI)null);
+		m.marshal(null, (IRI)null,true);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
