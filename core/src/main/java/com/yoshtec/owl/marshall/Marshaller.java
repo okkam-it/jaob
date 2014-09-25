@@ -405,7 +405,9 @@ public class Marshaller {
 			// unpack Lists 
 			if( value instanceof Collection<?> ){
 				for( Object lv : ((Collection<?>)value) ){
-					addDataPropertyValue(ind, propuri, dt, printValue(lv));
+					String printValue = printValue(lv);
+					if(printValue!=null)
+						addDataPropertyValue(ind, propuri, dt, printValue);
 				}
 			} else if( value instanceof Object[]){ // or Object Arrays
 				for( Object lv : ((Object[])value) ){
@@ -470,6 +472,8 @@ public class Marshaller {
 	 * @return
 	 */
 	protected String printValue(Object value){
+		if(value==null)
+			return null;
 		if(value instanceof Calendar){
 			return DatatypeConverter.printDateTime((Calendar)value);
 		}
