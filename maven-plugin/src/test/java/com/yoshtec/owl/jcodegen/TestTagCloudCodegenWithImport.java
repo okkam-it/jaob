@@ -10,7 +10,7 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 public class TestTagCloudCodegenWithImport {
 	
 	@Test
-	public void testCodegenMatryoshka() throws Exception{
+	public void testCodegenTagCloud() throws Exception{
 		Codegen codegen = new Codegen();
 		
 		// the java package to create the classes in
@@ -30,10 +30,13 @@ public class TestTagCloudCodegenWithImport {
 		List<String> ignoreProperties = new ArrayList<>();
 		ignoreProperties.add(OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI().toString());
 		codegen.setIgnoreProperties(ignoreProperties);
-		
+		List<String> ignoredAbstractClassIRIs = new ArrayList<>();
+		ignoredAbstractClassIRIs.add("http://models.okkam.org/tagcloud/application#SocialBeing");
+		ignoredAbstractClassIRIs.add("http://purl.org/swum#Demographics");
+		codegen.setIgnoredAbstractClassIRIs(ignoredAbstractClassIRIs);
 		// where to write the source to
-//		codegen.setJavaSourceFolder(new File("/tmp/jaob-test"));
-		codegen.setJavaSourceFolder(new File("/home/flavio/git/playground/src/main/java/"));
+		codegen.setJavaSourceFolder(new File("/tmp/jaob"));
+		codegen.setJavaSourceFolder(new File("/home/flavio/git/tagcloud-owl-proxy/src/main/java/"));
 		
 		// will generate "indName" String fields with @OwlIndividualId annotation and implementations
 		codegen.setGenerateIdField(true);

@@ -148,6 +148,8 @@ public class Codegen {
 	
 	private List<String> ignoreProperties = new ArrayList<>();
 
+	public static List<String> ignoredAbstractClassIRIs = new ArrayList<>();
+
 	/**
 	 * Creates a new Code Generator.
 	 */
@@ -1151,5 +1153,11 @@ public class Codegen {
 
 	public void setIgnoreProperties(List<String> ignoreProperties) {
 		this.ignoreProperties = ignoreProperties;
+	}
+
+	public void setIgnoredAbstractClassIRIs(
+			List<String> ignoredAbstractClassIRIs) {
+		this.ignoredAbstractClassIRIs.addAll(ignoredAbstractClassIRIs);
+		
 	}
 }

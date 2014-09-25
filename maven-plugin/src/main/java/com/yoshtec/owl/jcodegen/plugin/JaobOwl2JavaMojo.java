@@ -43,6 +43,9 @@ public class JaobOwl2JavaMojo extends AbstractMojo {
 	private boolean generateIdField;
 	@Parameter(property = "ignoredProperties")
 	private List<String> ignoredProperties;
+	/** IRI of classes which are subclassed that should be not marked as abstract */
+	@Parameter(property = "ignoredAbstractClassIRIs")
+	private List<String> ignoredAbstractClassIRIs;
 	@Parameter(property = "idFieldName", defaultValue = "id")
 	private String idFieldName;
 	
@@ -72,6 +75,9 @@ public class JaobOwl2JavaMojo extends AbstractMojo {
 			codegen.setOntologyPhysicalIri(ontologyUri);
 			if(ignoredProperties!=null){
 				codegen.setIgnoreProperties(ignoredProperties);
+			}
+			if(ignoredAbstractClassIRIs!=null){
+				codegen.setIgnoredAbstractClassIRIs(ignoredAbstractClassIRIs);
 			}
 			
 			// where to write the source to

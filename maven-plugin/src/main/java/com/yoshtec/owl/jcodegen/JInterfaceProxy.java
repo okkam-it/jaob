@@ -109,6 +109,7 @@ import com.yoshtec.owl.util.OntologyUtil;
 	
 	/** Super classes of this interface / class */
 	private Set<JInterfaceProxy> directSuperClasses = new HashSet<JInterfaceProxy>();
+	private boolean hasSublcasses = false;
 	
 	/** Other interfaces implementing this one */
 	private Set<JInterfaceProxy> implementors = new HashSet<JInterfaceProxy>();
@@ -195,6 +196,7 @@ import com.yoshtec.owl.util.OntologyUtil;
 		//this.iface._implements(iface.iface);
 		// add this one to the other one
 		iface.implementors.add(this);
+		iface.hasSublcasses = true;
 
 	}
 
@@ -222,7 +224,13 @@ import com.yoshtec.owl.util.OntologyUtil;
 		JDefinedClass jclass = jpack._getClass(name.concat(classSuffix));
 		if(jclass == null){
 			try {
-				jclass = jpack._class(name.concat(classSuffix));
+				//TODO if a class has subclasses mark as abstract
+				int mod = JMod.PUBLIC;
+				if(hasSublcasses && !Codegen.ignoredAbstractClassIRIs.contains(classUri.toString())){
+					mod = mod | JMod.ABSTRACT;
+				}
+				jclass = jpack._class(mod,name.concat(classSuffix));
+//				jclass = jpack._class(name.concat(classSuffix));
 			} catch (JClassAlreadyExistsException e) {
 				log.debug("Already existent Class: " + name ,e);
 			}
@@ -364,7 +372,12 @@ import com.yoshtec.owl.util.OntologyUtil;
 	 * @param factory to add the factory Method to
 	 */
 	public void addtoObjectFactory(JDefinedClass factory){
-	
+		//do not add constructors for abstract classes
+		if(hasSublcasses){
+			if(!Codegen.ignoredAbstractClassIRIs.contains(classUri.toString())){
+				return;
+			}
+		}
 		JDefinedClass returntype = (createInterface ? getInterface() : getImplementation());
 		
 		JMethod creator = factory.method(JMod.PUBLIC, returntype, Const.CREATE_PREFIX + name);
