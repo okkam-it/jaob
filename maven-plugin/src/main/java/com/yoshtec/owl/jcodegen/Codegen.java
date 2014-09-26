@@ -1157,7 +1157,7 @@ public class Codegen {
 
 	public void setIgnoredAbstractClassIRIs(
 			List<String> ignoredAbstractClassIRIs) {
-		this.ignoredAbstractClassIRIs.addAll(ignoredAbstractClassIRIs);
+		Codegen.ignoredAbstractClassIRIs.addAll(ignoredAbstractClassIRIs);
 		
 	}
 }
