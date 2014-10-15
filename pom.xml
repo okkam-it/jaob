@@ -1,0 +1,174 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.okkam.owl</groupId>
+	<artifactId>jaob</artifactId>
+	<version>0.1-SNAPSHOT</version>
+	<name>JAOB (Java Architecture for Owl Binding)</name>
+	<packaging>pom</packaging>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License (GPL)</name>
+			<url>http://www.gnu.org/licenses/gpl.txt</url>
+		</license>
+	</licenses>
+
+	<modules>
+		<module>core</module>
+		<module>maven-plugin</module>
+	</modules>
+
+	<properties>
+		<jdk.version>1.7</jdk.version>
+		<skipTests>true</skipTests>
+		<slf4j.version>1.7.7</slf4j.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0</version>
+				<executions>
+					<execution>
+						<id>attach-descriptor</id>
+						<goals>
+							<goal>attach-descriptor</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-project-info-reports-plugin</artifactId>
+							<version>2.4</version>
+							<reportSets>
+								<reportSet>
+									<reports>
+										<report>dependencies</report>
+										<report>project-team</report>
+										<report>license</report>
+										<report>issue-tracking</report>
+									</reports>
+								</reportSet>
+							</reportSets>
+						</plugin>
+					</reportPlugins>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+					<!-- Enables deep copying of the **/doc-files directories -->
+					<docfilessubdirs>true</docfilessubdirs>
+					<title>Okkam JAOB ${project.version}</title>
+					<doctitle>Okkam JAOB ${project.version}</doctitle>
+					<windowtitle>Okkam JAOB ${project.version}</windowtitle>
+					<overview>${basedir}/core/src/main/javadoc/overview.html</overview>
+					<bottom> Copyright &#169; {currentYear} Okkam s.r.l. Limited. All
+						rights reserved.</bottom>
+					<sourcepath>${basedir}/core/src/main/java:${basedir}/maven-plugin/src/main/java</sourcepath>
+					<finalName>jaob-${project.version}</finalName>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<header>license/templates/LGPL-3.txt</header>
+					<aggregate>true</aggregate>
+					<excludes>
+						<exclude>**/*.md</exclude>
+						<exclude>**/pom.xml</exclude>
+						<exclude>${basedir}/core/src/test/resources/**</exclude>
+						<exclude>${basedir}/core/src/main/resources/**</exclude>
+						<exclude>${basedir}/maven-plugin/src/test/resources/**</exclude>
+						<exclude>${basedir}/maven-plugin/src/main/resources/**</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+<!-- 						<phase>generate-sources</phase> -->
+						<goals>
+							<goal>remove</goal>
+<!-- 							<goal>format</goal> -->
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.mycila</groupId>
+										<artifactId>
+											license-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.3,)
+										</versionRange>
+										<goals>
+											<goal>format</goal>
+											<goal>check</goal>
+											<goal>remove</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<repositories>
+		<repository>
+			<id>okkam-public-repo</id>
+			<url>https://dev.okkam.it/artifactory/repo</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+	</repositories>
+</project>

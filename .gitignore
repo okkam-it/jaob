@@ -1,0 +1,17 @@
+# eclipse specific git ignore
+.project
+.metadata
+*.tmp
+*.bak
+*.swp
+.classpath
+.settings/
+
+# maven git ignore
+target/
+otest/
+
+# intellij ignore
+*.ipr
+*.iws
+*.iml

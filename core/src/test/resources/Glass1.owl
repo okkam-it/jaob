@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY p1 "#" >
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY owl2 "http://www.w3.org/2006/12/owl2#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY Glass "http://www.yoshtec.com/ontology/test/Glass#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="Glass1.owl#"
+     xml:base="http://www.yoshtec.com/ontology/test/Glass"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:p1="#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:Glass="http://www.yoshtec.com/ontology/test/Glass#"
+     xmlns:owl2="http://www.w3.org/2006/12/owl2#">
+    <owl:Ontology rdf:about="">
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- #col -->
+
+    <owl:ObjectProperty rdf:about="#col"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- #name -->
+
+    <owl:DatatypeProperty rdf:about="#name"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- #Glass -->
+
+    <owl:Class rdf:about="#Glass"/>
+    
+
+
+    <!-- http://www.yoshtec.com/ontology/test/Glass#GlassColor -->
+
+    <owl:Class rdf:about="&Glass;GlassColor" >
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#GREEN"/>
+                    <rdf:Description rdf:about="#Blue"/>
+                    <rdf:Description rdf:about="#Brown"/>
+                    <rdf:Description rdf:about="#Yellow"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- #12122157 -->
+
+    <p1:Glass rdf:about="#12122157">
+        <p1:name rdf:datatype="&xsd;string">Coke</p1:name>
+        <p1:col rdf:resource="#GREEN"/>
+    </p1:Glass>
+
+    <!-- #GREEN -->
+
+    <Glass:GlassColor rdf:about="#GREEN"/>
+
+	<!-- #1741620 -->
+
+	<p1:Glass rdf:about="#1741620">
+		<p1:name rdf:datatype="&xsd;string">Coke</p1:name>
+		<p1:col rdf:resource="#Brown" />
+	</p1:Glass>
+
+
+	<!-- #Brown -->
+
+	<Glass:GlassColor rdf:about="#Brown" />
+	<Glass:GlassColor rdf:about="#Blue" />
+	<Glass:GlassColor rdf:about="#Yellow" />
+    
+</rdf:RDF>
