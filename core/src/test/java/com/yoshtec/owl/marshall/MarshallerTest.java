@@ -12,7 +12,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import com.yoshtec.owl.testclasses.brain.Brain;
 
 public class MarshallerTest {
-    		
+	private static final String OUT_DIR = "target/test";
 	@Test
 	public void testMarshallerBrain1() throws Exception{
 	    Brain brain = new Brain();
@@ -22,7 +22,7 @@ public class MarshallerTest {
 	    
 	    Marshaller marshaller = new Marshaller();
 	    
-	    marshaller.marshal(obj , IRI.create("BrainInds.owl"), IRI.create(new File("otest/BrainInds1.owl")));
+	    marshaller.marshal(obj , IRI.create("BrainInds.owl"), IRI.create(new File(OUT_DIR, "BrainInds1.owl")));
 	}
 	
 

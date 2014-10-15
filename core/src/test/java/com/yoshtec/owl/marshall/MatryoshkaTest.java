@@ -12,6 +12,7 @@ import com.yoshtec.owl.testclasses.matryoshka.MatryoshkaImpl;
 
 public class MatryoshkaTest {
 
+	private static final String OUT_DIR = "target/test";
     /** number of objects to create */
     private final static int MAX_OBJ = 20000;
     
@@ -32,7 +33,7 @@ public class MatryoshkaTest {
         a.add(darth);
         
         Marshaller marshaller = new Marshaller();
-        File file = new File("otest/MatryoshkaInds1.owl");
+        File file = new File(OUT_DIR, "MatryoshkaInds1.owl");
 		marshaller.marshal( a , IRI.create("MatryoshkaInds.owl"), IRI.create(file));
         
     }
@@ -56,7 +57,7 @@ public class MatryoshkaTest {
         a.add(m1);
         
         Marshaller marshaller = new Marshaller();
-        File file = new File("otest/MatryoshkaInds2.owl");
+        File file = new File(OUT_DIR, "MatryoshkaInds2.owl");
 		marshaller.marshal( a , IRI.create("MatryoshkaInds.owl"), IRI.create(file));
         
     }

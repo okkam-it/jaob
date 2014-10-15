@@ -12,11 +12,11 @@ import com.yoshtec.owl.testclasses.matryoshka.Matryoshka;
 import com.yoshtec.owl.testclasses.matryoshka.MatryoshkaImpl;
 
 public class MarshalUnmarshalTest {
-
-//	static private final int MAX_OBJ = 500;
-	static private final int MAX_OBJ = 2;
 	
-	final static IRI tmpuri = IRI.create(new File("otest/Mtemp.owl"));
+	private static final String OUT_DIR = "target/test";
+	private static final int MAX_OBJ = 2;//500
+	
+	final static IRI tmpuri = IRI.create(new File(OUT_DIR, "Mtemp.owl"));
 	
 	@Test
 	public void testRoundTrip() throws Exception{

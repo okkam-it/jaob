@@ -1,6 +1,8 @@
 package com.yoshtec.owl;
 
 import org.semanticweb.owlapi.model.IRI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Enum Representing the XML Schema built in types as well as some 
@@ -76,6 +78,7 @@ public enum XsdType {
 	NOTATION			("NOTATION");
 		
 	//// Constants
+	final static private Logger log = LoggerFactory.getLogger(XsdType.class);
 	/** the base URI for all xsd built-in types */
 	public static final String XML_SCHEMA_BASE_URI = "http://www.w3.org/2001/XMLSchema";
 	
@@ -161,10 +164,12 @@ public enum XsdType {
 	 */
 	public static XsdType fromIri(IRI uri){
 		if("http://www.w3.org/2000/01/rdf-schema#Literal".equals(uri.toString())){
-			return XsdType.STRING;//TODO ---- porcata
+			log.warn("Assuming http://www.w3.org/2000/01/rdf-schema#Literal as String...");
+			return XsdType.STRING;// could it be better handled...?
 		}
 		if("http://www.w3.org/2001/rdf-schema#Literal".equals(uri.toString())){
-			return XsdType.STRING;//TODO ---- porcata
+			log.warn("Found wrong type: http://www.w3.org/2001/rdf-schema#Literal. Assuming as String...");
+			return XsdType.STRING;// TODO used only temporary to handle bad namespace..
 		}
 		for(XsdType x : XsdType.values()){
 			if(x.uri.equals(uri) || x.urialt.equals(uri)){

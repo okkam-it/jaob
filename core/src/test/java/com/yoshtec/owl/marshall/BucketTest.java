@@ -22,6 +22,7 @@ import com.yoshtec.owl.testclasses.bucket.Stuff;
  */
 public class BucketTest {
 
+	private static final String OUT_DIR = "target/test";
 	/** number of objects to create */
 	private final static int MAX_OBJ = 20000;
 
@@ -51,8 +52,7 @@ public class BucketTest {
 		a.add(bucket);
 
 		Marshaller marshaller = new Marshaller();
-		File file = new File(
-				"otest/BucketInds1.owl");
+		File file = new File(OUT_DIR, "BucketInds1.owl");
 		marshaller.marshal(a, IRI.create("BucketInds.owl"), IRI.create(file) );
 
 	}
@@ -78,7 +78,7 @@ public class BucketTest {
 		a.add(bucket);
 
 		Marshaller marshaller = new Marshaller();
-		File file = new File("otest/BucketInds2.owl");
+		File file = new File(OUT_DIR, "BucketInds2.owl");
 		marshaller.marshal(a, IRI.create("BucketIndividualsLots.owl"),
 				IRI.create(file) );
 
@@ -93,7 +93,7 @@ public class BucketTest {
 		un.registerClass(Stuff.class);
 
 		Collection<Object> objects = un
-				.unmarshal(IRI.create("test/bucket.owl"));
+				.unmarshal(IRI.create(OUT_DIR, "bucket.owl"));
 
 		for (Object obj : objects) {
 			System.out.println(obj.toString());
@@ -108,7 +108,7 @@ public class BucketTest {
 		un.registerClass(com.yoshtec.owl.testclasses.bucket.ObjectFactory.class);
 
 		Collection<Object> objects = un
-				.unmarshal(IRI.create("test/bucket.owl"));
+				.unmarshal(IRI.create(OUT_DIR, "bucket.owl"));
 
 		for (Object obj : objects) {
 			System.out.println(obj.toString());
@@ -127,7 +127,7 @@ public class BucketTest {
 
 		Bucket buck = un
 				.unmarshall(
-						IRI.create(new File("test/bucket.owl")),
+						IRI.create(new File(OUT_DIR, "bucket.owl")),
 						IRI.create("http://www.yoshtec.com/ontology/test/Bucket#MyPrecious"));
 
 		System.out.println(buck.getMaterial());

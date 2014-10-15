@@ -143,10 +143,6 @@ public class OntologyGenerator {
         
         // add all imports to the ontology
         for( IRI impuri : importUris ) {
-//        	if(true){
-//        		System.out.println("TODO ------------------------- ");
-//        		continue;
-//        	}
             try {
             		
                 OWLImportsDeclaration importDeclaraton = factory.getOWLImportsDeclaration(impuri);
