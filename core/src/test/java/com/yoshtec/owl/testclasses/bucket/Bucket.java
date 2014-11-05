@@ -73,7 +73,7 @@ public class Bucket {
         
         sb.append("engraving='");
         for( String s : engraving ){
-            sb.append("e='").append(engraving).append("', ");
+            sb.append("e='").append(s).append("', ");
         } 
         sb.append("';");
         
