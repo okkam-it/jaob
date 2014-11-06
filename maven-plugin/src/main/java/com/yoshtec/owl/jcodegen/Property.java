@@ -247,7 +247,7 @@ import com.yoshtec.owl.annotations.oprop.OwlFunctionalObjectProperty;
 			type = this.type.boxify();
 		}
 		if(!this.functional){
-			type = type.owner().ref(List.class).narrow(type);
+			type = type.owner().ref(ArrayList.class).narrow(type);
 		}
 		return type;
 	}
