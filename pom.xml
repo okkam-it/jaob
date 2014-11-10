@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.okkam.owl</groupId>
 	<artifactId>jaob</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<name>JAOB (Java Architecture for Owl Binding)</name>
 	<packaging>pom</packaging>
 
@@ -154,7 +153,7 @@
 					<doctitle>Okkam JAOB ${project.version}</doctitle>
 					<windowtitle>Okkam JAOB ${project.version}</windowtitle>
 					<overview>${basedir}/core/src/main/javadoc/overview.html</overview>
-					<bottom> Copyright &#169; {currentYear} Okkam s.r.l. Limited. All
+					<bottom> Copyright © {currentYear} Okkam s.r.l. Limited. All
 						rights reserved.</bottom>
 					<sourcepath>${basedir}/core/src/main/java:${basedir}/maven-plugin/src/main/java</sourcepath>
 					<finalName>jaob-${project.version}</finalName>
@@ -225,7 +224,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
