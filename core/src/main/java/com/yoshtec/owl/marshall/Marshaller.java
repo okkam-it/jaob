@@ -86,6 +86,8 @@ public class Marshaller {
 	private Map<Class<?>,ClassFacade> classes = new HashMap<Class<?>,ClassFacade>();
 	
 	private ClassFacadeFactory cfFactory;
+
+	private Map<IRI, IRI> iriMap = new HashMap<>();
 	
 	/**
 	 * Creates a new Marshaller to serialize annotated Java objects to 
@@ -113,6 +115,7 @@ public class Marshaller {
 		
 		// Set up a mapping, which maps the ontology IRI to the physical IRI
 		SimpleIRIMapper mapper = new SimpleIRIMapper(ontologyUri, physicalUri);
+		iriMap.put(ontologyUri,physicalUri);
 		manager.addIRIMapper(mapper);
 
 		// Now create the ontology - we use the ontology IRI (not the physical IRI)
@@ -175,7 +178,11 @@ public class Marshaller {
 		// create the ontology
 		OWLOntology ont;
 		try {
-			ont = createOntology(ontologyUri, ontologyPhysicalUri);
+			if(ontologyPhysicalUri!=null){
+				ont = manager.createOntology(ontologyUri);
+			}else{
+				ont = createOntology(ontologyUri, ontologyPhysicalUri);
+			}
 		} catch (OWLOntologyCreationException e) {
 			throw new MarshalException("Error creating the ontology " + ontologyUri, e);
 		}
@@ -193,7 +200,9 @@ public class Marshaller {
 		return ontology;
 		
 	}
-	
+	public OWLOntology marshal(Collection<?> objects, IRI ontologyIRI, Writer output, boolean deep) throws MarshalException {
+		return marshal(objects,ontologyIRI,null, output, deep);
+	}
 	/**
 	 * 
 	 * Creates an ontology (ABOX). Marshalls the Objects passed and saves the Ontology in the passed Writer
@@ -206,16 +215,19 @@ public class Marshaller {
 	 * @return the newly created Ontology 
 	 * @throws MarshalException if the marshalling failed
 	 */
-	public OWLOntology marshal(Collection<?> objects, IRI ontologyURI, Writer output, boolean deep) throws MarshalException {
-		if(ontologyURI == null)
+	public OWLOntology marshal(Collection<?> objects, IRI ontologyIRI, IRI ontologyPhysicalIRI, Writer output, boolean deep) throws MarshalException {
+		if(ontologyIRI == null)
 			throw new IllegalArgumentException("No ontologyURI specified");
 		if(output == null)
 			throw new IllegalArgumentException("Writer cannot be null");
 		
 		try {
-			this.marshal(objects, manager.createOntology(ontologyURI), deep);
+			OWLOntology ont = manager.getOntology(ontologyIRI);
+			if(ont==null)
+				ont = createOntology(ontologyIRI,ontologyPhysicalIRI);
+			this.marshal(objects, ont, deep);
 		} catch (OWLOntologyCreationException e) {
-			throw new MarshalException("Unable to create Ontology " +  ontologyURI, e);
+			throw new MarshalException("Unable to create Ontology " +  ontologyIRI, e);
 		}
 		
 		OWLOntologyDocumentTarget target = new WriterDocumentTarget(output);
@@ -279,8 +291,11 @@ public class Marshaller {
 			
 			// Base Uri of the Package
 			//TODO -------------------------------------
-			OWLImportsDeclaration importDeclaraton = factory.getOWLImportsDeclaration(cf.getOntoBaseUri());
-			ontology.getOWLOntologyManager().applyChange(new AddImport(ontology, importDeclaraton));
+			IRI ontoBaseIRI = cf.getOntoBaseUri();
+			IRI physicalIRI = iriMap.get(ontoBaseIRI);
+			IRI IRItoImport = physicalIRI == null ? ontoBaseIRI : physicalIRI;
+			OWLImportsDeclaration importDeclaraton = factory.getOWLImportsDeclaration(IRItoImport);
+			manager.applyChange(new AddImport(ontology, importDeclaraton));
 //			manager.addAxiom(ontology, owlImportsDeclaration);
 		}
 		return cf;

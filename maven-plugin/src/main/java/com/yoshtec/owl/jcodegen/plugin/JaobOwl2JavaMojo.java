@@ -41,6 +41,8 @@ public class JaobOwl2JavaMojo extends AbstractMojo {
 	
 	@Parameter(property = "generateIdField", defaultValue = "false")
 	private boolean generateIdField;
+	@Parameter(property = "generateInterfaces", defaultValue = "true")
+	private boolean generateInterfaces;
 	@Parameter(property = "ignoredProperties")
 	private List<String> ignoredProperties;
 	/** IRI of classes which are subclassed that should be not marked as abstract */
@@ -73,6 +75,7 @@ public class JaobOwl2JavaMojo extends AbstractMojo {
 			// Ontology loading parameters
 			codegen.setOntologyIri(ontologyNs);
 			codegen.setOntologyPhysicalIri(ontologyUri);
+			codegen.setGenerateInterfaces(generateInterfaces);
 			if(ignoredProperties!=null){
 				codegen.setIgnoreProperties(ignoredProperties);
 			}
