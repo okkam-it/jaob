@@ -14,3 +14,6 @@ target/
 *.ipr
 *.iws
 *.iml
+**/pom.xml.releaseBackup
+pom.xml.releaseBackup
+/release.properties
