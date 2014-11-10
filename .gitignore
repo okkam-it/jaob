@@ -9,7 +9,6 @@
 
 # maven git ignore
 target/
-otest/
 
 # intellij ignore
 *.ipr
