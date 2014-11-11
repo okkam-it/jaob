@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.okkam.owl</groupId>
 	<artifactId>jaob</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>JAOB (Java Architecture for Owl Binding)</name>
 	<packaging>pom</packaging>
 
@@ -181,24 +181,19 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9.1</version>
-				<configuration>
-					<!-- Enables deep copying of the **/doc-files directories -->
-					<docfilessubdirs>true</docfilessubdirs>
-					<title>Okkam JAOB ${project.version}</title>
-					<doctitle>Okkam JAOB ${project.version}</doctitle>
-					<windowtitle>Okkam JAOB ${project.version}</windowtitle>
-					<overview>${basedir}/core/src/main/javadoc/overview.html</overview>
-					<bottom> Copyright © {currentYear} Okkam s.r.l. Limited. All
-						rights reserved.</bottom>
-					<sourcepath>${basedir}/core/src/main/java:${basedir}/maven-plugin/src/main/java</sourcepath>
-					<finalName>jaob-${project.version}</finalName>
-				</configuration>
-			</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.9.1</version>
+					<configuration>
+						<!-- Enables deep copying of the **/doc-files directories -->
+						<docfilessubdirs>true</docfilessubdirs>
+						<title>Okkam JAOB ${project.version}</title>
+						<doctitle>Okkam JAOB ${project.version}</doctitle>
+						<windowtitle>Okkam JAOB ${project.version}</windowtitle>
+						<bottom> Copyright © {currentYear} Okkam s.r.l.</bottom>
+					</configuration>
+				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
 				<plugin>

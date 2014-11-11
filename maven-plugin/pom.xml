@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.okkam.owl</groupId>
 		<artifactId>jaob</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0</version>
 	</parent>
 	<packaging>maven-plugin</packaging>
 	<artifactId>jaob-maven-plugin</artifactId>
@@ -51,7 +51,8 @@
 				<artifactId>maven-plugin-plugin</artifactId>
 				<version>3.2</version>
 				<configuration>
-					<goalPrefix>owl2java</goalPrefix>
+					<goalPrefix>jaob</goalPrefix>
+					<goal>owl2java</goal>
 				</configuration>
 				<executions>
 					<execution>
