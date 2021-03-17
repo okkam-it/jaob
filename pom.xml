@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.okkam.owl</groupId>
 	<artifactId>jaob</artifactId>
@@ -47,33 +49,42 @@
 	</modules>
 
 	<properties>
-		<jdk.version>1.7</jdk.version>
-		<skipTests>true</skipTests>
-		<slf4j.version>1.7.7</slf4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.release>11</maven.compiler.release>
+		<skipTests>true</skipTests>
+		<slf4j.version>1.7.7</slf4j.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>4.13.1</version>
 			<scope>test</scope>
+		</dependency>
+		<!--java.xml.bind (JAXB) - REMOVED since java 11 -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.3.0</version>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>${jdk.version}</source>
-					<target>${jdk.version}</target>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
@@ -170,13 +181,13 @@
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.4</version>
+				<version>1.6.8</version>
 				<extensions>true</extensions>
 				<configuration>
 					<serverId>sonatype-nexus-staging</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 					<stagingProfileId>8683ea0aef40d5</stagingProfileId>
-     				<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -185,7 +196,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.9.1</version>
+					<version>3.2.0</version>
 					<configuration>
 						<!-- Enables deep copying of the **/doc-files directories -->
 						<docfilessubdirs>true</docfilessubdirs>
