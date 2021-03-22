@@ -8,10 +8,10 @@ import java.lang.annotation.Target;
 
 /**
  * Denotes that a Field shall not be marshalled or unmarshalled.
- * 
- * This can also happen by the Java <code>transient</code> keyword for
- * fields. But sometimes it is desired, that a field may be serialized 
- * by some other serialization technique but not by JAOB.
+ * <p>
+ * This can also happen by the Java <code>transient</code> keyword for fields. But sometimes it is
+ * desired, that a field may be serialized by some other serialization technique but not by JAOB.
+ * </p>
  * 
  * @author Jonas von Malottki
  *
@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value={ElementType.FIELD, ElementType.METHOD})
+@Target(value = {ElementType.FIELD, ElementType.METHOD})
 public @interface OwlTransient {
 
 }

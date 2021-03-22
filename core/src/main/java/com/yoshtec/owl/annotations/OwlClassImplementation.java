@@ -7,13 +7,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Represents that a Java Class is made from several OWL Classes
- * defined by an Interface.
- * 
+ * Represents that a Java Class is made from several OWL Classes defined by an Interface.
+ * <p>
  * TODO: currently not so sure if really needed?
- * 
- * <br>
+ * </p>
  * Example:
+ * 
  * <pre>
  * {@literal @}OwlClass(uri="http://www.co-ode.org/ontologies/pizza/pizza.owl#CheeseTopping")
  * public interface CheeseTopping{
@@ -30,7 +29,7 @@ import java.lang.annotation.Target;
  * {@literal @}OwlClassImplementation({VegetableTopping.class, CheeseTopping.class});
  * public class CheeseyVegetableTopping 
  *  implements CheeseTopping, VegetableTopping{
- * 	//...
+ *  &#47;&#47;...
  * }
  * </pre>
  * 
@@ -42,5 +41,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface OwlClassImplementation {
-	Class<?>[] value();
+  /**
+   * The list of classes.
+   */
+  Class<?>[] value();
 }

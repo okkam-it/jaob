@@ -7,5 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OwlImports {
-	String[] uris();
+  /**
+   * Import URIs.
+   */
+  String[] uris();
 }

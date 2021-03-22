@@ -15,6 +15,7 @@ public class TestCodegen {
     // the java package to create the classes in
     codegen.setJavaPackageName("matryoshkatest");
 
+
     // Ontology loading parameters
     codegen.setOntologyIri("http://www.yoshtec.com/ontology/test/matryoshka");
     codegen

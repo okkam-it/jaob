@@ -10,6 +10,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface OwlObjectIntersectionOf {
-	String[] classes();
-	Class<?>[] javaclasses() default {};
+  /**
+   * The list of ontology classes.
+   */
+  String[] classes();
+
+  /**
+   * The list of Java classes.
+   */
+  Class<?>[] javaclasses() default {};
 }

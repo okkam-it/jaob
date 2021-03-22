@@ -1,12 +1,11 @@
 package com.yoshtec.owl.annotations;
 
+import com.yoshtec.owl.marshall.UnMarshaller;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import com.yoshtec.owl.marshall.UnMarshaller;
 
 /**
  * This Annotation is to mark Object Factories for Classes created 

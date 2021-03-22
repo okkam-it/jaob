@@ -74,8 +74,11 @@ import org.slf4j.LoggerFactory;
 /**
  * This Class generates iCode out of an ontology, where most of the declared classes will result in
  * a Java class and property declarations will be added to them with the appropriate setter and
- * getter methods. </br>
- * <h2>Example:</h2> <blockquote>
+ * getter methods.
+ * <p>
+ * <h2>Example:</h2>
+ * 
+ * <blockquote>
  * 
  * <pre>
  * Codegen codegen = new Codegen();
@@ -87,6 +90,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * 
  * </blockquote>
+ * </p>
  * 
  * @author Jonas von Malottki
  * @author Flavio Pompermaier
@@ -95,42 +99,41 @@ import org.slf4j.LoggerFactory;
 
 public class Codegen {
 
-  /** Logger */
-  static private final Logger log = LoggerFactory.getLogger(Codegen.class);
+  private static final Logger LOG = LoggerFactory.getLogger(Codegen.class);
 
   // Settings
 
-  /** logical IRI of the Ontology */
-  private String ontologyIri = null;
+  /** logical IRI of the Ontology. */
+  private String ontologyIriStr = null;
 
-  /** physical IRI of the Ontology */
-  private String ontologyPhysicalIri = null;
+  /** physical IRI of the Ontology. */
+  private String ontologyPhysicalIriStr = null;
 
-  /** Java Package name to be created */
+  /** Java Package name to be created. */
   private String javaPackageName = null;
 
-  /** source folder to put generated classes in */
+  /** source folder to put generated classes in. */
   private File javaSourceFolder = null;
 
-  /** Suffix for an of an Interface */
+  /** Suffix for an of an Interface. */
   private String javaClassSuffix = "Impl";
 
-  /** Class Name for the owl:thing Class */
+  /** Class Name for the owl:thing Class. */
   private String owlthingclassname = "Thing";
 
-  /** whether a Object Factory Class should be generated */
+  /** whether a Object Factory Class should be generated. */
   private boolean createObjectFactory = true;
 
-  /** name of the Object Factory Class */
+  /** name of the Object Factory Class. */
   private String objectFactoryName = "ObjectFactory";
 
-  /** if a OWL ID Property shall be generated */
+  /** if a OWL ID Property shall be generated. */
   private boolean generateIdField = false;
 
-  /** name of the OWL ID field / property */
+  /** name of the OWL ID field / property. */
   private String idFieldName = "name";
 
-  /** if interfaces should be generated */
+  /** if interfaces should be generated. */
   private boolean generateInterfaces = true;
 
   // local work variables
@@ -140,13 +143,13 @@ public class Codegen {
 
   private final XsdTypeMapper typeMapper = new XsdTypeMapper();
 
-  /** holds the interfaces and the Properties */
+  /** holds the interfaces and the Properties. */
   private Map<String, JInterfaceProxy> interfaces = new HashMap<String, JInterfaceProxy>();
 
 
   private List<String> ignoreProperties = new ArrayList<>();
 
-  public static List<String> ignoredAbstractClassIRIs = new ArrayList<>();
+  public static List<String> ignoredAbstractClassIris = new ArrayList<>();
 
   /**
    * Creates a new Code Generator.
@@ -154,40 +157,40 @@ public class Codegen {
   public Codegen() {}
 
   /**
-   * Loads an Ontology
+   * Loads an Ontology.
    * 
-   * @return
-   * @throws OWLOntologyCreationException
-   * @throws Exception
+   * @return the loaded ontology
+   * @throws OWLOntologyCreationException if any exception occurs
+   * @throws Exception if any exception occurs
    */
   private OWLOntology loadOntology() throws OWLOntologyCreationException {
 
     OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
     OWLOntology result = null;
 
-    IRI ontologyIRI = IRI.create(ontologyIri);
+    IRI ontologyIri = IRI.create(ontologyIriStr);
 
-    if (ontologyPhysicalIri != null && ontologyIri != null) {
+    if (ontologyPhysicalIriStr != null && ontologyIriStr != null) {
       // Create a physical IRI which can be resolved to point to where our
       // ontology will be saved.
-      IRI physicalIRI = IRI.create(ontologyPhysicalIri);
+      IRI physicalIri = IRI.create(ontologyPhysicalIriStr);
 
       // Set up a mapping, which maps the ontology IRI to the physical IRI
-      SimpleIRIMapper mapper = new SimpleIRIMapper(ontologyIRI, physicalIRI);
+      SimpleIRIMapper mapper = new SimpleIRIMapper(ontologyIri, physicalIri);
       manager.addIRIMapper(mapper);
       // manager.addIRIMapper(new NonMappingOntologyIRIMapper());
 
-      log.debug("Attempting to load Ontology (IRI={}) from physical IRI={}", ontologyIRI,
-          physicalIRI);
+      LOG.debug("Attempting to load Ontology (IRI={}) from physical IRI={}", ontologyIri,
+          physicalIri);
 
-      result = manager.loadOntology(physicalIRI);
+      result = manager.loadOntology(physicalIri);
 
     } else {
-      log.debug("Attempting to load Ontology from IRI={}", ontologyIRI);
-      result = manager.loadOntology(ontologyIRI);
+      LOG.debug("Attempting to load Ontology from IRI={}", ontologyIri);
+      result = manager.loadOntology(ontologyIri);
     }
 
-    log.info("Successfully loaded Ontology IRI={}", ontologyIRI);
+    LOG.info("Successfully loaded Ontology IRI={}", ontologyIri);
 
     return result;
 
@@ -195,11 +198,12 @@ public class Codegen {
 
   /**
    * Generates java code for a given Ontology.
-   * 
+   * <p>
    * The Java code makes heavily use of Annotations. And will be in respect to handwritten annotated
    * overly verbose.
+   * </p>
    * 
-   * @throws CodegenException
+   * @throws CodegenException if any exception occurs.
    */
   public void genCode() throws CodegenException {
 
@@ -270,30 +274,32 @@ public class Codegen {
    * checks if all necessary fields are set.
    */
   private void checkstate() throws IllegalStateException {
-    if (javaPackageName == null)
+    if (javaPackageName == null) {
       throw new IllegalStateException("Must set a Java package name!");
-    if (javaSourceFolder == null)
+    }
+    if (javaSourceFolder == null) {
       throw new IllegalStateException("Must set a Java source folder!");
-    if (ontologyIri == null)
+    }
+    if (ontologyIriStr == null) {
       throw new IllegalStateException("No ontology URL set!");
+    }
   }
 
-  /**
-   * Write Annotations to the Package
-   */
+  /** Write Annotations to the Package. */
   private void annotatePackage() {
     // Base IRI
     // Comments
     final JDocComment jdoc = jpack.javadoc();
     jdoc.append("Automatically generated Package from Ontology\n");
     jdoc.append("Ontology IRI: <code>");
-    jdoc.append(ontologyIri);
+    jdoc.append(ontologyIriStr);
     jdoc.append("</code></br>\n");
-    if (this.ontologyPhysicalIri != null)
-      jdoc.append("Loaded from IRI: <code>").append(ontologyPhysicalIri).append("</code>");
+    if (this.ontologyPhysicalIriStr != null) {
+      jdoc.append("Loaded from IRI: <code>").append(ontologyPhysicalIriStr).append("</code>");
+    }
 
     // Annotation
-    jpack.annotate(OwlOntology.class).param("uri", ontologyIri);
+    jpack.annotate(OwlOntology.class).param("uri", ontologyIriStr);
 
     // OWL Imports
     Set<OWLImportsDeclaration> imports = ontology.getImportsDeclarations();
@@ -311,7 +317,7 @@ public class Codegen {
 
     // owl annotations
     for (OWLAnnotation oannot : ontology.getAnnotations()) {
-      log.debug("Ontology annotation {}", oannot);
+      LOG.debug("Ontology annotation {}", oannot);
       OWLAnnotationObjectVisitor v = new OWLAnnotationObjectVisitor() {
 
         @Override
@@ -352,7 +358,7 @@ public class Codegen {
           jdoc.append("</br>");
         }
       };
-      log.debug("Annotation: {}", oannot.toString());
+      LOG.debug("Annotation: {}", oannot.toString());
       oannot.accept(v);
 
     }
@@ -372,7 +378,7 @@ public class Codegen {
     for (OWLClass ocls : classesInSignature) {
 
       // basically OWL classes map "best" to Java Interfaces
-      log.debug("Using OWLClass: {}", ocls);
+      LOG.debug("Using OWLClass: {}", ocls);
 
       // Initially build the proxies to generate Implementation
 
@@ -382,7 +388,7 @@ public class Codegen {
       JInterfaceProxy jinterface =
           new JInterfaceProxy(name, jpack, generateInterfaces, javaClassSuffix);
 
-      log.info("Adding JInterfaceProxy for class {}", name);
+      LOG.info("Adding JInterfaceProxy for class {}", name);
       interfaces.put(name, jinterface);
 
       // add some Annotations
@@ -400,13 +406,13 @@ public class Codegen {
       // check for multiple inheritance
       Set<OWLClassExpression> superClasses = ocls.getSuperClasses(ontology);
       if (superClasses.size() > 1 && !this.generateInterfaces) {
-        throw new CodegenException(
-            "Unable to create Classes with multiple inheritance. \n Use Interfaces via the generateInterfaces option.");
+        throw new CodegenException("Unable to create Classes with multiple inheritance.\n"
+            + "Use Interfaces via the generateInterfaces option.");
       }
       if (superClasses.size() == 0) {
         JInterfaceProxy thingInterface = interfaces.get(owlthingclassname);
         if (!thingInterface.equals(jinterface)) {
-          log.info("Adding default subclassing of Thing for level 1 class {}", ocls.getIRI());
+          LOG.info("Adding default subclassing of Thing for level 1 class {}", ocls.getIRI());
           // Subinterface them
           jinterface.addIntersection(thingInterface);
         }
@@ -419,13 +425,13 @@ public class Codegen {
 
         final JInterfaceProxy ljinterface = getInterface(odesc);
         String fullName = ljinterface.fullName();
-        log.debug("Java: Class {} extends {} ", fullName, superClassFullName);
+        LOG.debug("Java: Class {} extends {} ", fullName, superClassFullName);
         // for(OWLAxiom indi : ((OWLClass) odesc).getReferencingAxioms(ontology)){
         // System.out.println(indi);//TODO manage restriction on DataHasValue
         // }
 
         // Subinterface them
-        ljinterface._implements(jinterface);
+        ljinterface.addToImplementors(jinterface);
       }
     }
 
@@ -439,12 +445,12 @@ public class Codegen {
 
           @Override
           public void visit(OWLClass desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLObjectIntersectionOf desc) {
-            log.debug("Class {} is IntersectionOf: ", ocls, desc.getOperands());
+            LOG.debug("Class {} is IntersectionOf: ", ocls, desc.getOperands());
             for (OWLClassExpression idesc : desc.getOperands()) {
               JInterfaceProxy ljinterface = getInterface(idesc);
               if (ljinterface != null) {
@@ -452,7 +458,7 @@ public class Codegen {
               } else {
                 final String msg = "Nested class Operands: Class " + ocls + " is equivalent to "
                     + desc.toString() + " ";
-                log.debug(msg);
+                LOG.debug(msg);
                 throw new IllegalStateException(msg);
               }
 
@@ -461,7 +467,7 @@ public class Codegen {
 
           @Override
           public void visit(OWLObjectUnionOf desc) {
-            log.debug("Class {} is UnionOf: {} ", ocls, desc.getOperands());
+            LOG.debug("Class {} is UnionOf: {} ", ocls, desc.getOperands());
             for (OWLClassExpression idesc : desc.getOperands()) {
               JInterfaceProxy ljinterface = getInterface(idesc);
               jinterface.addUnion(ljinterface);
@@ -470,77 +476,77 @@ public class Codegen {
 
           @Override
           public void visit(OWLObjectComplementOf desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLObjectOneOf desc) {
-            log.debug("Individuals: {}", desc.getIndividuals());
+            LOG.debug("Individuals: {}", desc.getIndividuals());
           }
 
           @Override
           public void visit(OWLObjectSomeValuesFrom desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLObjectAllValuesFrom desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLObjectHasValue desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLObjectMinCardinality desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLObjectExactCardinality desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLObjectMaxCardinality desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLObjectHasSelf desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLDataSomeValuesFrom desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLDataAllValuesFrom desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLDataHasValue desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLDataMinCardinality desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLDataExactCardinality desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
           @Override
           public void visit(OWLDataMaxCardinality desc) {
-            log.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
+            LOG.warn("Not yet able to handle equivalent classes on {} eq {}", ocls, desc);
           }
 
         };
@@ -563,7 +569,7 @@ public class Codegen {
       String name = (ocls.isOWLThing() ? owlthingclassname : className);
       return interfaces.get(name);
     } catch (OWLRuntimeException e) {
-      log.debug("Found anonymous or strange class {}", desc);
+      LOG.debug("Found anonymous or strange class {}", desc);
     }
     return null;
 
@@ -599,26 +605,26 @@ public class Codegen {
 
   private void addProperties(OWLProperty<?, ?> prop, PropertyType type) {
 
-    log.debug("Property: {} \t {}", prop.getClass(), prop);
+    LOG.debug("Property: {} \t {}", prop.getClass(), prop);
     if (ignoreProperties.contains(prop.getIRI().toString())) {
-      log.warn("\t\t Ignoring blacklisted property {}", prop.getIRI().toString());
+      LOG.warn("\t\t Ignoring blacklisted property {}", prop.getIRI().toString());
       return;
     }
 
     Set<OWLClassExpression> domains = prop.getDomains(ontology.getImportsClosure());
     if (domains.isEmpty()) {
       // if it is not associated with a special class than it can be used at owl:Thing level
-      log.warn("\t\t Property {} has empty domain; bounding to default class (Thing)",
+      LOG.warn("\t\t Property {} has empty domain; bounding to default class (Thing)",
           prop.getIRI());
       this.addProperty(prop, interfaces.get(owlthingclassname), type);
     } else {
       // for each included class Methods have to be generated
       for (OWLClassExpression odes : domains) {
 
-        log.trace("\t\t Domain: {}", odes);
+        LOG.trace("\t\t Domain: {}", odes);
 
         // all associated classes will be added
-        for (OWLClass ocls : OntologyUtil.getOWLClasses(odes)) {
+        for (OWLClass ocls : OntologyUtil.getOwlClasses(odes)) {
           // add a property
           final String className = OntologyUtil.getClassName(ocls);
           JInterfaceProxy iface = interfaces.get(className);
@@ -634,19 +640,19 @@ public class Codegen {
     final Property jprop = new Property();
 
     // variable name in normal case and first letter uppercase
-    String fragment = prop.getIRI().getFragment();
-    StringBuffer pName = new StringBuffer(fragment.toString());
-    pName.setCharAt(0, Character.toLowerCase(pName.charAt(0)));
-    String propName = toCamelCase(pName.toString());
+    final String fragment = prop.getIRI().getFragment();
+    final StringBuilder propNameStringBuilder = new StringBuilder(fragment.toString());
+    propNameStringBuilder.setCharAt(0, Character.toLowerCase(propNameStringBuilder.charAt(0)));
+    final String propName = toCamelCase(propNameStringBuilder.toString());
     jprop.setName(propName);
 
     // Property Type
     jprop.setPtype(type);
 
     // Functional?
-    boolean functional = prop.isFunctional(ontology.getImportsClosure());
+    final boolean functional = prop.isFunctional(ontology.getImportsClosure());
     jprop.setFunctional(functional);
-    log.debug("  Adding Property {} [{}]{} to Class {}",
+    LOG.debug("  Adding Property {} [{}]{} to Class {}",
         new Object[] {propName, prop.getIRI(), (functional ? "*" : ""), iface.name()});
 
     // Property IRI
@@ -662,11 +668,10 @@ public class Codegen {
     }
     // if there is no Range we can save some time
     if (!ranges.isEmpty()) {
-
       // if it has more than one data Range than Make it a String
       // still then you are on your own in specifying the correct Syntax
       if (ranges.size() > 1 && prop instanceof OWLDataProperty) {
-        log.warn("  Range of Property '{}' is bigger than one: {}", prop, ranges);
+        LOG.warn("  Range of Property '{}' is bigger than one: {}", prop, ranges);
         // using string as fall back
         jprop.setBaseType(jmodel._ref(String.class));
         iface.addProperty(jprop);
@@ -677,29 +682,26 @@ public class Codegen {
           OWLPropertyRange next = ranges.iterator().next();
           jprop.setBaseType(this.switchType(next));
         } else if (prop instanceof OWLObjectProperty) {
-
           if (ranges.size() > 1 || ranges.size() == 0) {
             // more than one Class can be Included
-            log.info("  Workaround using Object for Prop {} with Ranges: {}", prop, ranges);
+            LOG.info("  Workaround using Object for Prop {} with Ranges: {}", prop, ranges);
             jprop.setBaseType(jmodel._ref(Object.class));
             // could also use thing here??
           } else {
             OWLPropertyRange pr = ranges.iterator().next();
-
             if (pr instanceof OWLClass) {
               //
               IRI propIri = ((OWLClass) pr).getIRI();
               jprop.setBaseType(interfaces.get(propIri.getFragment().toString()));
-              // jtype =
-              // jpack._getClass(((OWLClass)pr).toString());
+              // jtype = jpack._getClass(((OWLClass)pr).toString());
             } else {
               jprop.setBaseType(jmodel._ref(Object.class));
-              log.warn("Unable to handle this Construct: {}", pr);
-              LogUtil.logObjectInfo(pr, log);
+              LOG.warn("Unable to handle this Construct: {}", pr);
+              LogUtil.logObjectInfo(pr, LOG);
             }
           }
         } else {
-          log.error(" Encoutered Unknown Property: {}", prop);
+          LOG.error(" Encoutered Unknown Property: {}", prop);
           throw new IllegalStateException(" Encoutered Unknown Property: " + prop);
         }
         iface.addProperty(jprop);
@@ -714,9 +716,9 @@ public class Codegen {
           // ObjectProperty Class Data type IRI
           jprop.addDatatype(((OWLClass) o).getIRI().toURI());
         } else {
-          log.warn("  Unable to annotate this construct: {} of Type {} ", o,
+          LOG.warn("  Unable to annotate this construct: {} of Type {} ", o,
               o.getClass().getName());
-          LogUtil.logObjectInfo(o, log);
+          LogUtil.logObjectInfo(o, LOG);
         }
       }
     }
@@ -758,7 +760,7 @@ public class Codegen {
           }
         }
       };
-      log.debug("Found annotation: {}", oa.toString());
+      LOG.debug("Found annotation: {}", oa.toString());
       oa.accept(v);
     }
   }
@@ -784,34 +786,26 @@ public class Codegen {
     return sb.toString();
   }
 
-  /**
-   * 
-   * @param range
-   * @return
-   */
   private Class<?> switchDataType(OWLPropertyRange range) {
     Class<?> result = null;
     if (range instanceof OWLDatatype) {
       OWLDatatype dt = (OWLDatatype) range;
       XsdType fromIri = XsdType.fromIri(dt.getIRI());
       result = typeMapper.getType(fromIri);
-      log.debug("DataType: {} OwlType: {}", result, dt);
+      LOG.debug("DataType: {} OwlType: {}", result, dt);
     } else if (range instanceof OWLDataOneOf) {
       OWLDataOneOf dt = (OWLDataOneOf) range;
       result = Object.class;
-      log.debug("DataType: {} OwlType: {}", result, dt);
+      LOG.debug("DataType: {} OwlType: {}", result, dt);
     } else {
-      log.warn("Unable to handle this Object {}", range.toString());
-      LogUtil.logObjectInfo(range, log);
+      LOG.warn("Unable to handle this Object {}", range.toString());
+      LogUtil.logObjectInfo(range, LOG);
     }
     return result;
   }
 
   /**
    * Convenience method returning a JType.
-   * 
-   * @param range
-   * @return
    */
   private JClass switchType(OWLPropertyRange range) {
     Class<?> dt = switchDataType(range);
@@ -824,10 +818,7 @@ public class Codegen {
   }
 
   /**
-   * Add some Annotations to the Interface
-   * 
-   * @param jinterface
-   * @param ocls
+   * Add some Annotations to the Interface.
    */
   private void annotateClass(final JInterfaceProxy iface, OWLClass ocls) {
 
@@ -883,7 +874,7 @@ public class Codegen {
           iface.addAnnotation(iri.toURI(), content, dturi, isComment);
         }
       };
-      log.debug("Annotation: {}", oannot.toString());
+      LOG.debug("Annotation: {}", oannot.toString());
       oannot.accept(v);
     }
   }
@@ -891,7 +882,7 @@ public class Codegen {
   /**
    * Sets the name of the Java Package to be created for the ontology.
    * 
-   * @param packageName
+   * @param packageName the package name
    */
   public void setJavaPackageName(String packageName) {
     if (packageName != null && (packageName.length() >= 0)
@@ -907,37 +898,39 @@ public class Codegen {
   }
 
   /**
-   * @return the ontologyIri
+   * Returns the ontologyIri.
    */
   public String getOntologyIri() {
-    return ontologyIri;
+    return ontologyIriStr;
   }
 
   /**
+   * Sets the ontology IRI.
+   * 
    * @param ontologyIri the ontologyIri to set
    */
   public void setOntologyIri(String ontologyIri) {
     // if this uri is not correct throw an exception
     IRI.create(ontologyIri);
-    this.ontologyIri = ontologyIri;
+    this.ontologyIriStr = ontologyIri;
   }
 
   /**
-   * @return the javaSourceFolder
+   * Returns the javaSourceFolder.
    */
   public File getJavaSourceFolder() {
     return javaSourceFolder;
   }
 
   /**
-   * @param javaSourceFolder the javaSourceFolder to set
+   * Returns javaSourceFolder the javaSourceFolder to set.
    */
   public void setJavaSourceFolder(File javaSourceFolder) {
     this.javaSourceFolder = javaSourceFolder;
   }
 
   /**
-   * @return the javaClassSuffix
+   * Returns the javaClassSuffix.
    */
   public String getJavaClassSuffix() {
     return javaClassSuffix;
@@ -959,23 +952,25 @@ public class Codegen {
   }
 
   /**
-   * @return the ontologyPhysicalIri
+   * Returns the ontologyPhysicalIri.
    */
   public String getOntologyPhysicalIri() {
-    return ontologyPhysicalIri;
+    return ontologyPhysicalIriStr;
   }
 
   /**
+   * Sets the physical iri of the ontology.
+   * 
    * @param ontologyPhysicalIri the ontologyPhysicalIri to set
    */
   public void setOntologyPhysicalIri(String ontologyPhysicalIri) {
     // if this uri is not correct throw an exception
     IRI.create(ontologyPhysicalIri);
-    this.ontologyPhysicalIri = ontologyPhysicalIri;
+    this.ontologyPhysicalIriStr = ontologyPhysicalIri;
   }
 
   /**
-   * @return {@code true} if Interfaces will be generated
+   * Returns {@code true} if Interfaces will be generated.
    */
   public boolean isGenerateInterfaces() {
     return generateInterfaces;
@@ -995,7 +990,7 @@ public class Codegen {
   }
 
   /**
-   * @return {@code true} if Id Fields will be generated
+   * Returns {@code true} if Id Fields will be generated.
    */
   public boolean isGenerateIdField() {
     return generateIdField;
@@ -1014,7 +1009,7 @@ public class Codegen {
   }
 
   /**
-   * @return the name of the generated ID field
+   * Returns the name of the generated ID field.
    */
   public String getIdFieldName() {
     return idFieldName;
@@ -1024,7 +1019,7 @@ public class Codegen {
    * Sets the name of the owl Individual id field in the generated Java classes.<br/>
    * Default value is <code>"name"</code>.
    * 
-   * @param idFieldName
+   * @param idFieldName the id field name
    * @see #setGenerateIdField(boolean)
    */
   public void setIdFieldName(String idFieldName) {
@@ -1032,7 +1027,7 @@ public class Codegen {
   }
 
   /**
-   * @return if a ObjectFactory will be generated
+   * Returns if a ObjectFactory will be generated.
    */
   public boolean isCreateObjectFactory() {
     return createObjectFactory;
@@ -1052,7 +1047,7 @@ public class Codegen {
   }
 
   /**
-   * @return the objectFactoryName
+   * Returns the objectFactoryName.
    */
   public String getObjectFactoryName() {
     return objectFactoryName;
@@ -1073,8 +1068,7 @@ public class Codegen {
     this.ignoreProperties = ignoreProperties;
   }
 
-  public void setIgnoredAbstractClassIRIs(List<String> ignoredAbstractClassIRIs) {
-    Codegen.ignoredAbstractClassIRIs.addAll(ignoredAbstractClassIRIs);
-
+  public void setIgnoredAbstractClassIris(List<String> ignoredAbstractClassIris) {
+    Codegen.ignoredAbstractClassIris.addAll(ignoredAbstractClassIris);
   }
 }

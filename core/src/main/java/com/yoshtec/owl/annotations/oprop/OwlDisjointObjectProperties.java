@@ -7,5 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OwlDisjointObjectProperties {
-	String[] objectProperties();
+  /**
+   * The disjoint object properties.
+   */
+  String[] objectProperties();
 }

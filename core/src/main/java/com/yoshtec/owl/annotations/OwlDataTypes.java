@@ -5,17 +5,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Helper Annotation for Annotating DataRanges correctly
- * Example:
+ * Helper Annotation for Annotating DataRanges correctly. Example:
+ * 
  * <pre>
  * //...
  * {@literal @}OwlDataTypes({
- * 	{@literal @}OwlDataType(uri="xsd:string"),
- * 	{@literal @}OwlDataType(uri="xsd:int")
- * 	})
+ *  {@literal @}OwlDataType(uri="xsd:string"),
+ *  {@literal @}OwlDataType(uri="xsd:int")
+ *  })
  * private Object value;
  * 
  * </pre>
+ * 
  * @author malottki
  * @see OwlDataType
  */
@@ -23,5 +24,8 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OwlDataTypes {
-	OwlDataType[] value();
+  /**
+   * The data type value.
+   */
+  OwlDataType[] value();
 }

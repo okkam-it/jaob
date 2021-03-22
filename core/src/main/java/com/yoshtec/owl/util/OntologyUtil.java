@@ -20,23 +20,22 @@ import org.slf4j.LoggerFactory;
  */
 public class OntologyUtil {
 
-  private final static Logger log = LoggerFactory.getLogger(OntologyUtil.class);
+  private static final Logger log = LoggerFactory.getLogger(OntologyUtil.class);
 
-  public final static URI OWL_THING_URI = URI.create("http://www.w3.org/2002/07/owl#Thing");
+  public static final URI OWL_THING_URI = URI.create("http://www.w3.org/2002/07/owl#Thing");
 
   /**
-   * gets all classes somehow described in this OWLDescription that is:
+   * Gets all classes somehow described in this OWLDescription that is:
    * <ul>
    * <li>Single OWLClasses</li>
    * <li>Through ObjectUnionOf Nested OWLClasses</li>
    * </ul>
+   * Currently lacks to handle OWLObjectIntersectionOf.
    * 
-   * Currently lacks to handle OWLObjectIntersectionOf
-   * 
-   * @param odes
+   * @param odes the OWLClassExpression
    * @return Owlclasses
    */
-  public static Set<OWLClass> getOWLClasses(OWLClassExpression odes) {
+  public static Set<OWLClass> getOwlClasses(OWLClassExpression odes) {
     Set<OWLClass> result = new HashSet<OWLClass>();
 
     // if(odes.isAnonymous()){
@@ -80,13 +79,13 @@ public class OntologyUtil {
   /**
    * Convenience method for retrieving a set of classes from a Collection of OWLDescription.
    * 
-   * @param odesc
+   * @param odesc the collection of OWLClassExpression
    * @return Set of OWL classes form the OWLDescriptions
    */
-  public static Set<OWLClass> getOWLClasses(Collection<OWLClassExpression> odesc) {
+  public static Set<OWLClass> getOwlClasses(Collection<OWLClassExpression> odesc) {
     Set<OWLClass> result = new HashSet<OWLClass>();
     for (OWLClassExpression odes : odesc) {
-      result.addAll(getOWLClasses(odes));
+      result.addAll(getOwlClasses(odes));
     }
     return result;
 
