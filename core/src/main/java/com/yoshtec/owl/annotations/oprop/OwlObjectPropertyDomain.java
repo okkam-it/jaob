@@ -7,5 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OwlObjectPropertyDomain {
-	String domain();
+  /**
+   * The object property domain.
+   */
+  String domain();
 }

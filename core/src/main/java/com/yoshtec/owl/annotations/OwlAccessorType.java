@@ -1,14 +1,14 @@
 package com.yoshtec.owl.annotations;
 
+import com.yoshtec.owl.PropertyAccessType;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.yoshtec.owl.PropertyAccessType;
-
 /**
+ * OwlAccessorType.
  * 
  * @author Jonas von Malottki
  *
@@ -17,5 +17,8 @@ import com.yoshtec.owl.PropertyAccessType;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface OwlAccessorType {
-    PropertyAccessType value();
+  /**
+   * Returns the value.
+   */
+  PropertyAccessType value();
 }

@@ -5,13 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Is used to annotate Java classes with owl Constructs:
- * </br>
- * Example:
+ * Is used to annotate Java classes with owl Constructs. Example:
+ * 
  * <pre>
  * {@literal @}OwlAnnotations({
- * 		{@literal @}OwlAnnotation(TODO),
- * 		{@literal @}OwlAnnotation(TODO)
+ *  {@literal @}OwlAnnotation(TODO),
+ *  {@literal @}OwlAnnotation(TODO)
  * })
  * public class CheseTopping extends PizzaTopping{
  *  // methods
@@ -25,5 +24,8 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OwlAnnotations {
-	OwlAnnotation[] value();
+  /**
+   * The annotation values.
+   */
+  OwlAnnotation[] value();
 }

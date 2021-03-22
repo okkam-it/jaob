@@ -7,17 +7,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <a href="http://www.w3.org/2007/OWL/wiki/Syntax#Class_Expressions_Axioms"> 
- * OWL Spec: Class Expressions Axioms</a>
+ * <a href="http://www.w3.org/2007/OWL/wiki/Syntax#Class_Expressions_Axioms"> OWL Spec: Class
+ * Expressions Axioms</a>.
  * 
  * @author Jonas von Malottki
- *
  */
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PACKAGE, ElementType.TYPE})
 public @interface OwlDisjointClasses {
-	/** OWL Class URI's */
-	String[] classes();
+  /** OWL Class URI's. */
+  String[] classes();
 }

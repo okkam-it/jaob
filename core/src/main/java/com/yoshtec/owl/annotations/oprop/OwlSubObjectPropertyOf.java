@@ -7,5 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OwlSubObjectPropertyOf {
-	String superObjectProperty();
+  /**
+   * The super property of this object property.
+   */
+  String superObjectProperty();
 }

@@ -7,11 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 
- * Allows to set the name an Lexical value of an Enum constant in 
- * the OWL Model to a different value than the Java Enum name. 
- * <br>
- * 
+ * Allows to set the name an Lexical value of an Enum constant in the OWL Model to a different value
+ * than the Java Enum name.
+ * <p>
  * <b>Example:</b> <br>
  * <code><pre> 
  * {@literal @}OwlClass
@@ -21,11 +19,11 @@ import java.lang.annotation.Target;
  *      FEMALE
  * }
  * </pre> </code>
- * <br>
- * In this example the OWL enumerated class "Gender" will have to individuals.
- * Namely "Male" and "FEMALE"
- *  
- * 
+ * </p>
+ * <p>
+ * In this example the OWL enumerated class "Gender" will have to individuals. Namely "Male" and
+ * "FEMALE".
+ * </p>
  * 
  * @author Jonas von Malottki
  *
@@ -34,5 +32,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface OwlEnumValue {
-    String value();
+  /**
+   * The enum value.
+   */
+  String value();
 }

@@ -7,11 +7,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation denotes that the annotated Class
- * is the same as owl:Thing. 
- * 
- * This is especially important when defining global
- * Properties.
+ * This annotation denotes that the annotated Class is the same as owl:Thing.
+ * <p>
+ * This is especially important when defining global Properties.
+ * </p>
  * 
  * @author Jonas von Malottki
  *

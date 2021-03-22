@@ -5,9 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Functional Syntax: 
+ * Functional Syntax. Defined as:
+ * 
  * <pre>
- * objectPropertyRange := 'ObjectPropertyRange' '(' { annotation } objectPropertyExpression description ')'
+ * objectPropertyRange := 'ObjectPropertyRange'
+ *  '(' { annotation } objectPropertyExpression description ')'
  * </pre>
  * 
  * @author yoshtec
@@ -17,5 +19,8 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OwlObjectPropertyRange {
-	String domain();
+  /**
+   * The object property range.
+   */
+  String range();
 }

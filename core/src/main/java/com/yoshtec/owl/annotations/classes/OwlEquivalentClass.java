@@ -7,8 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <a href="http://www.w3.org/2007/OWL/wiki/Syntax#Equivalent_Classes">
- * OWL Spec: EquivalentClasses</a>
+ * <a href="http://www.w3.org/2007/OWL/wiki/Syntax#Equivalent_Classes"> OWL Spec:
+ * EquivalentClasses.</a>
  * 
  * @author Jonas von Malottki
  */
@@ -16,5 +16,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface OwlEquivalentClass {
-	String[] classes();
+  /**
+   * The list of equivalent classes.
+   */
+  String[] classes();
 }

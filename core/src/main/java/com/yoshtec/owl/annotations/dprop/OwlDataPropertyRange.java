@@ -7,5 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OwlDataPropertyRange {
-	String range();
+
+  /**
+   * The data-property range.
+   */
+  String range();
 }

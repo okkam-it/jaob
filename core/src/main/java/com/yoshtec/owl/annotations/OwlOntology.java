@@ -9,12 +9,11 @@ import java.lang.annotation.Target;
 
 /**
  * Represents the Definition of the OWL Ontology itself.
- * </br>
- * This is the Ontology which Defines the Classes and Properties 
- * for the Individuals created from the Marshalled Objects.
- * Which means that the Marshaller will create a new Ontology that
- * just imports this one.
- * </br>
+ * <p>
+ * This is the Ontology which Defines the Classes and Properties for the Individuals created from
+ * the Marshalled Objects. Which means that the Marshaller will create a new Ontology that just
+ * imports this one.
+ * </p>
  * Should be used on a package.
  * 
  * @author Jonas von Malottki
@@ -25,6 +24,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PACKAGE})
 public @interface OwlOntology {
-	/** Definition ontology URI */
-	String uri();
+  /** Definition ontology URI. */
+  String uri();
 }

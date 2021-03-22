@@ -8,7 +8,10 @@ import java.lang.annotation.Target;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD,ElementType.FIELD})
+@Target({ElementType.METHOD, ElementType.FIELD})
 public @interface OwlEquivalentDataProperties {
-	String[] dataProperties();
+  /**
+   * The equivalent data-properties.
+   */
+  String[] dataProperties();
 }

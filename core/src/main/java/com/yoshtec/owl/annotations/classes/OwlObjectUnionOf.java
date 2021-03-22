@@ -7,12 +7,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <a href="http://www.w3.org/2007/OWL/wiki/Syntax#Union">
- * OWL Spec: ObjectUnionOf</a>
- * 
- * TODO: this could be solved in the codegen via creating an Interface 
- * with an name that represents this union, in respect that the interface
- * extends the other classes.
+ * <a href="http://www.w3.org/2007/OWL/wiki/Syntax#Union"> OWL Spec: ObjectUnionOf</a>.
+ * <p>
+ * TODO: this could be solved in the codegen via creating an Interface with an name that represents
+ * this union, in respect that the interface extends the other classes.
+ * </p>
  * 
  * @author Jonas von Malottki
  *
@@ -21,6 +20,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface OwlObjectUnionOf {
-	/** Class URIs */
-	String[] classes();
+  /** Class URIs. */
+  String[] classes();
 }

@@ -7,5 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OwlEquivalentObjectProperties {
-	String[] objectProperties();
+  /**
+   * The equivalent object properties.
+   */
+  String[] objectProperties();
 }

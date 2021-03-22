@@ -7,5 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OwlInverseObjectProperty {
-	String inverse();
+  /**
+   * The inverse object properties.
+   */
+  String inverse();
 }
