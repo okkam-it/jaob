@@ -458,8 +458,8 @@ public class Codegen {
               } else {
                 final String msg = "Nested class Operands: Class " + ocls + " is equivalent to "
                     + desc.toString() + " ";
-                LOG.debug(msg);
-                throw new IllegalStateException(msg);
+                LOG.warn(msg);
+                /// throw new IllegalStateException(msg);
               }
 
             }
