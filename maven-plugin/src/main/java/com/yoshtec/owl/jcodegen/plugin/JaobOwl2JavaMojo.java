@@ -34,10 +34,10 @@ public class JaobOwl2JavaMojo extends AbstractMojo {
   private File output;
   @Parameter(property = "packageName")
   private String packageName;
-  @Parameter(property = "ontologyUri")
-  private String ontologyUri;
-  @Parameter(property = "ontologyNs")
-  private String ontologyNs;
+  @Parameter(property = "ontologyPhisicalIri")
+  private String ontologyPhisicalIri;
+  @Parameter(property = "ontologyIri")
+  private String ontologyIri;
 
   @Parameter(property = "generateIdField", defaultValue = "false")
   private boolean generateIdField;
@@ -64,7 +64,7 @@ public class JaobOwl2JavaMojo extends AbstractMojo {
     try {
       final Path outputPath = output.toPath();
       final Log log = getLog();
-      log.info(String.format("Generating {} java classes from ontology ", ontologyUri));
+      log.info(String.format("Generating {} java classes from ontology ", ontologyPhisicalIri));
 
       final Codegen codegen = new Codegen();
 
@@ -72,8 +72,8 @@ public class JaobOwl2JavaMojo extends AbstractMojo {
       codegen.setJavaPackageName(packageName);
 
       // Ontology loading parameters
-      codegen.setOntologyIri(ontologyNs);
-      codegen.setOntologyPhysicalIri(ontologyUri);
+      codegen.setOntologyIri(ontologyIri);
+      codegen.setOntologyPhysicalIri(ontologyPhisicalIri);
       codegen.setGenerateInterfaces(generateInterfaces);
       if (ignoredProperties != null) {
         codegen.setIgnoreProperties(ignoredProperties);

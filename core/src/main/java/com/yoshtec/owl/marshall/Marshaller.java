@@ -185,7 +185,7 @@ public class Marshaller {
     // create the ontology
     OWLOntology ont;
     try {
-      if (ontologyPhysicalUri != null) {
+      if (ontologyPhysicalUri == null) {
         ont = manager.createOntology(ontologyUri);
       } else {
         ont = createOntology(ontologyUri, ontologyPhysicalUri);
