@@ -53,7 +53,7 @@ import org.slf4j.LoggerFactory;
 
 public class Marshaller {
 
-  private static final Logger log = LoggerFactory.getLogger(Marshaller.class);
+  private static final Logger LOG = LoggerFactory.getLogger(Marshaller.class);
 
   // whether the annotated axioms should be marshaled or not
   // private boolean createComplexAxioms = false;
@@ -84,8 +84,6 @@ public class Marshaller {
 
   private ClassFacadeFactory cfFactory;
 
-  private Map<IRI, IRI> iriMap = new HashMap<>();
-
   /**
    * Creates a new Marshaller to serialize annotated Java objects to an ontology.
    */
@@ -111,9 +109,7 @@ public class Marshaller {
       throws OWLOntologyCreationException {
 
     // Set up a mapping, which maps the ontology IRI to the physical IRI
-    SimpleIRIMapper mapper = new SimpleIRIMapper(ontologyUri, physicalUri);
-    iriMap.put(ontologyUri, physicalUri);
-    manager.addIRIMapper(mapper);
+    addIriMapping(ontologyUri, physicalUri);
 
     // Now create the ontology - we use the ontology IRI (not the physical IRI)
     return manager.createOntology(ontologyUri);
@@ -170,47 +166,21 @@ public class Marshaller {
    * passed.
    * 
    * @param objects Objects to be saved to the ontology
-   * @param ontologyUri The IRI of the Ontology
-   * @param ontologyPhysicalUri the physical IRI to save the Ontology to, e.g. filename
+   * @param ontologyIri The IRI of the Ontology
+   * @param ontologyPhysicalIri the physical IRI to save the Ontology to, e.g. filename
    * @param deep if the object graph should be traversed or not, if it is not traversed only the
    *        uris of the object Properties will be filled in.
    * @return the newly created Ontology
    * @throws MarshalException if the marshalling failed
    */
-  public OWLOntology marshal(Collection<?> objects, IRI ontologyUri, IRI ontologyPhysicalUri,
+  public OWLOntology marshal(Collection<?> objects, IRI ontologyIri, IRI ontologyPhysicalIri,
       boolean deep) throws MarshalException {
-    if (objects == null) {
-      throw new IllegalArgumentException("No Objects to be marshalled");
-    }
-    // create the ontology
-    OWLOntology ont;
-    try {
-      if (ontologyPhysicalUri == null) {
-        ont = manager.createOntology(ontologyUri);
-      } else {
-        ont = createOntology(ontologyUri, ontologyPhysicalUri);
-      }
-    } catch (OWLOntologyCreationException e) {
-      throw new MarshalException("Error creating the ontology " + ontologyUri, e);
-    }
-
-    this.marshal(objects, ont, deep);
-
-    try {
-      manager.saveOntology(ontology, ontologyPhysicalUri);
-    } catch (UnknownOWLOntologyException e) {
-      throw new MarshalException("Error saving the ontology to " + ontologyPhysicalUri, e);
-    } catch (OWLOntologyStorageException e) {
-      throw new MarshalException("Error saving the ontology to " + ontologyPhysicalUri, e);
-    }
-
-    return ontology;
-
+    return marshal(objects, ontologyIri, ontologyPhysicalIri, null, deep);
   }
 
-  public OWLOntology marshal(Collection<?> objects, IRI ontologyIiri, Writer output, boolean deep)
+  public OWLOntology marshal(Collection<?> objects, IRI ontologyIri, Writer output, boolean deep)
       throws MarshalException {
-    return marshal(objects, ontologyIiri, null, output, deep);
+    return marshal(objects, ontologyIri, null, output, deep);
   }
 
   /**
@@ -220,32 +190,46 @@ public class Marshaller {
    * @param objects Objects to be saved to the ontology
    * @param ontologyIri The IRI of the Ontologyto
    * @param ontologyPhysicalIri the physical IRI of the ontology
-   * @param output the Wruter to save the Ontology to, e.g. BufferedWriter
+   * @param writer the Writer to save the Ontology to, e.g. BufferedWriter
    * @param deep if the object graph should be traversed or not, if it is not traversed only the
    *        uris of the object Properties will be filled in.
    * @return the newly created Ontology
    * @throws MarshalException if the marshalling failed
    */
   public OWLOntology marshal(Collection<?> objects, IRI ontologyIri, IRI ontologyPhysicalIri,
-      Writer output, boolean deep) throws MarshalException {
+      Writer writer, boolean deep) throws MarshalException {
     if (ontologyIri == null) {
       throw new IllegalArgumentException("No ontologyURI specified");
     }
-    if (output == null) {
-      throw new IllegalArgumentException("Writer cannot be null");
+    if (objects == null) {
+      throw new IllegalArgumentException("No Objects to be marshalled");
     }
 
+    // create the ontology
+    OWLOntology ont;
     try {
-      OWLOntology ont = manager.getOntology(ontologyIri);
-      if (ont == null) {
+      if (ontologyPhysicalIri == null) {
+        ont = manager.createOntology(ontologyIri);
+      } else {
         ont = createOntology(ontologyIri, ontologyPhysicalIri);
+        this.marshal(objects, ont, deep);
       }
-      this.marshal(objects, ont, deep);
     } catch (OWLOntologyCreationException e) {
-      throw new MarshalException("Unable to create Ontology " + ontologyIri, e);
+      throw new MarshalException("Error creating the ontology " + ontologyIri, e);
     }
 
-    OWLOntologyDocumentTarget target = new WriterDocumentTarget(output);
+    if (writer == null) {
+      try {
+        manager.saveOntology(ontology, ontologyPhysicalIri);
+      } catch (UnknownOWLOntologyException e) {
+        throw new MarshalException("Error saving the ontology to " + ontologyPhysicalIri, e);
+      } catch (OWLOntologyStorageException e) {
+        throw new MarshalException("Error saving the ontology to " + ontologyPhysicalIri, e);
+      }
+      return ontology;
+    }
+
+    OWLOntologyDocumentTarget target = new WriterDocumentTarget(writer);
 
     try {
       manager.saveOntology(ontology, target);
@@ -314,11 +298,14 @@ public class Marshaller {
       // Base Uri of the Package
       // TODO -------------------------------------
       IRI ontoBaseIri = cf.getOntoBaseUri();
-      IRI physicalIri = iriMap.get(ontoBaseIri);
-      IRI iritoImport = physicalIri == null ? ontoBaseIri : physicalIri;
-      OWLImportsDeclaration importDeclaraton = factory.getOWLImportsDeclaration(iritoImport);
+      OWLImportsDeclaration importDeclaraton = factory.getOWLImportsDeclaration(ontoBaseIri);
       manager.applyChange(new AddImport(ontology, importDeclaraton));
       // manager.addAxiom(ontology, owlImportsDeclaration);
+      try {
+        manager.loadOntology(importDeclaraton.getIRI());
+      } catch (OWLOntologyCreationException ex) {
+        LOG.error("Error while loading imported ontology '" + ontoBaseIri + "'", ex);
+      }
     }
     return cf;
   }
@@ -399,11 +386,9 @@ public class Marshaller {
       // discover new missing Individuals with its Object props
       while (!missingObjectProps.isEmpty()) {
 
-        Object obj = missingObjectProps.pop();
-
-        ClassFacade cf = getClassFacade(obj);
-
-        OWLIndividual ind = getOwlIndividual(obj, deep);
+        final Object obj = missingObjectProps.pop();
+        final ClassFacade cf = getClassFacade(obj);
+        final OWLIndividual ind = getOwlIndividual(obj, deep);
 
         // Object Properties
         for (PropertyAccessor prop : cf.getObjectProperties()) {
@@ -441,10 +426,10 @@ public class Marshaller {
           // get the first uri
           dt = factory.getOWLDatatype(dturis.iterator().next());
         } else {
-          log.warn("Cannot handle heterogenous DataProperties: {}", dturis);
+          LOG.warn("Cannot handle heterogenous DataProperties: {}", dturis);
         }
       } else {
-        log.warn("No DataType set, defaulting to xsd:string: {}, {}", prop, ind);
+        LOG.warn("No DataType set, defaulting to xsd:string: {}, {}", prop, ind);
       }
 
       // Process the values:
@@ -515,7 +500,7 @@ public class Marshaller {
     try {
       manager.addAxiom(ontology, addOVal);
     } catch (OWLOntologyChangeException e) {
-      log.warn("Unable to create {} <{}> {}", new Object[] {subj, pred, obj});
+      LOG.warn("Unable to create {} <{}> {}", new Object[] {subj, pred, obj});
     }
   }
 
@@ -542,7 +527,7 @@ public class Marshaller {
 
   /**
    * IRI Mappings can be added to this Marshaller via the Ontology Manager.
-   * 
+   *
    * @return the manager of this Marshaller.
    */
   public OWLOntologyManager getManager() {
@@ -578,6 +563,18 @@ public class Marshaller {
       cfFactory = new ClassFacadeFactory(typeMapper);
     }
     return cfFactory;
+  }
+
+  /**
+   * Adds the passed IRI mapper to the manager.
+   * 
+   * @param ontoIri the ontology IRI to map
+   * @param physicalOntoIri the physical location of the IRI to map
+   */
+  public void addIriMapping(IRI ontoIri, IRI physicalOntoIri) {
+    if (physicalOntoIri != null) {
+      manager.addIRIMapper(new SimpleIRIMapper(ontoIri, physicalOntoIri));
+    }
   }
 
 }
