@@ -1,7 +1,8 @@
 package com.yoshtec.owl.testclasses.enumt;
 
 import java.io.File;
-
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -27,122 +28,110 @@ import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.search.EntitySearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 public class GlassParse {
 
-    
-    final static private Logger log = LoggerFactory.getLogger(GlassParse.class);
-    
-    @Test
-    public void testGlassParsing() throws Exception {
-        
-        // create a manger for Ontologies
-        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();    
 
-        // We need a data factory to create various object from.  Each ontology has a reference
-        // to a data factory that we can use.
-        OWLDataFactory factory = manager.getOWLDataFactory();
-        
-        
-        OWLOntology ontology = manager.loadOntologyFromOntologyDocument((new File("test/Glass1.owl")));
-        boolean includeImportsClosure = true;
-        for(OWLClass cl : ontology.getClassesInSignature(includeImportsClosure) ){
-            log.debug("Class {}", cl);
-            
-            for(OWLClassExpression cl2 : cl.getEquivalentClasses(ontology)){
-                log.debug("EClass :: {}", cl2);
-                
-                OWLClassExpressionVisitor vis = new OWLClassExpressionVisitor(){
+  final static private Logger log = LoggerFactory.getLogger(GlassParse.class);
 
-                    @Override
-                    public void visit(OWLClass desc) {
-                    }
+  @Test
+  public void testGlassParsing() throws Exception {
 
-                    @Override
-                    public void visit(OWLObjectIntersectionOf desc) {
-                    }
+    // create a manger for Ontologies
+    OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 
-                    @Override
-                    public void visit(OWLObjectUnionOf desc) {
-                    }
+    // We need a data factory to create various object from. Each ontology has a reference
+    // to a data factory that we can use.
+    OWLDataFactory factory = manager.getOWLDataFactory();
 
-                    @Override
-                    public void visit(OWLObjectComplementOf desc) {
-                    }
 
-                    @Override
-                    public void visit(OWLObjectOneOf desc) {
-                        log.debug("Individuals: {}" , desc.getIndividuals());
-                    }
+    OWLOntology ontology = manager.loadOntologyFromOntologyDocument((new File("test/Glass1.owl")));
+    boolean includeImportsClosure = true;
+    for (OWLClass cl : ontology.getClassesInSignature(includeImportsClosure)) {
+      log.debug("Class {}", cl);
 
-					@Override
-					public void visit(OWLObjectSomeValuesFrom ce) {
-					}
+      final List<OWLClassExpression> eqClasses =
+          EntitySearcher.getEquivalentClasses(cl, ontology).collect(Collectors.toList());
+      for (OWLClassExpression cl2 : eqClasses) {
+        log.debug("EClass :: {}", cl2);
 
-					@Override
-					public void visit(OWLObjectAllValuesFrom ce) {
-					}
+        OWLClassExpressionVisitor vis = new OWLClassExpressionVisitor() {
 
-					@Override
-					public void visit(OWLObjectHasValue ce) {
-					}
+          @Override
+          public void visit(OWLClass desc) {}
 
-					@Override
-					public void visit(OWLObjectMinCardinality ce) {
-					}
+          @Override
+          public void visit(OWLObjectIntersectionOf desc) {}
 
-					@Override
-					public void visit(OWLObjectExactCardinality ce) {
-					}
+          @Override
+          public void visit(OWLObjectUnionOf desc) {}
 
-					@Override
-					public void visit(OWLObjectMaxCardinality ce) {
-					}
+          @Override
+          public void visit(OWLObjectComplementOf desc) {}
 
-					@Override
-					public void visit(OWLObjectHasSelf ce) {
-					}
+          @Override
+          public void visit(OWLObjectOneOf desc) {
+            log.debug("Individuals: {}", desc.getIndividuals());
+          }
 
-					@Override
-					public void visit(OWLDataSomeValuesFrom ce) {
-					}
+          @Override
+          public void visit(OWLObjectSomeValuesFrom ce) {}
 
-					@Override
-					public void visit(OWLDataAllValuesFrom ce) {
-					}
+          @Override
+          public void visit(OWLObjectAllValuesFrom ce) {}
 
-					@Override
-					public void visit(OWLDataHasValue ce) {
-					}
+          @Override
+          public void visit(OWLObjectHasValue ce) {}
 
-					@Override
-					public void visit(OWLDataMinCardinality ce) {
-						
-					}
+          @Override
+          public void visit(OWLObjectMinCardinality ce) {}
 
-					@Override
-					public void visit(OWLDataExactCardinality ce) {
-						
-					}
+          @Override
+          public void visit(OWLObjectExactCardinality ce) {}
 
-					@Override
-					public void visit(OWLDataMaxCardinality ce) {
-					}
+          @Override
+          public void visit(OWLObjectMaxCardinality ce) {}
 
-                    
-                    
-                };
-                
-                cl2.accept(vis);
+          @Override
+          public void visit(OWLObjectHasSelf ce) {}
 
-                
-            }
-            
-        }
-        
+          @Override
+          public void visit(OWLDataSomeValuesFrom ce) {}
+
+          @Override
+          public void visit(OWLDataAllValuesFrom ce) {}
+
+          @Override
+          public void visit(OWLDataHasValue ce) {}
+
+          @Override
+          public void visit(OWLDataMinCardinality ce) {
+
+          }
+
+          @Override
+          public void visit(OWLDataExactCardinality ce) {
+
+          }
+
+          @Override
+          public void visit(OWLDataMaxCardinality ce) {}
+
+
+
+        };
+
+        cl2.accept(vis);
+
+
+      }
+
     }
-    
+
+  }
+
 }

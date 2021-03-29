@@ -1,5 +1,6 @@
 package com.yoshtec.owl.marshall;
 
+import com.google.common.collect.Multimap;
 import com.yoshtec.owl.Const;
 import com.yoshtec.owl.XsdType;
 import com.yoshtec.owl.XsdTypeMapper;
@@ -25,10 +26,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.xml.bind.DatatypeConverter;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
@@ -38,6 +41,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -156,7 +160,9 @@ public final class UnMarshaller {
     IRI individualIri = oi.getIRI();
     if (!unmarshalledObjects.containsKey(individualIri)) {
       // check which Object shall be instantiated
-      Set<OWLClass> oclasses = OntologyUtil.getOwlClasses(oi.getTypes(ontology));
+      final List<OWLClassExpression> individualTypes = EntitySearcher.getTypes(oi, ontology)//
+          .collect(Collectors.toList());
+      Set<OWLClass> oclasses = OntologyUtil.getOwlClasses(individualTypes);
       LOG.debug("OWLClasses from Individual {}: {}", oi, oclasses);
 
       // check if more than one JavaClass is asserted to be
@@ -314,22 +320,21 @@ public final class UnMarshaller {
   }
 
   private void addObjectProperties(OWLIndividual oi, ClassFacade cf, Object instance) {
-    for (Entry<OWLObjectPropertyExpression, Set<OWLIndividual>> opentry : oi
-        .getObjectPropertyValues(ontology).entrySet()) {
+    final Multimap<OWLObjectPropertyExpression, OWLIndividual> individualObjectProperties =
+        EntitySearcher.getObjectPropertyValues(oi, ontology);
+    for (Entry<OWLObjectPropertyExpression, OWLIndividual> opentry : individualObjectProperties
+        .entries()) {
 
       // retrieve current property IRI
       IRI propUri = opentry.getKey().asOWLObjectProperty().getIRI();
 
       if (cf.hasProperty(propUri)) {
-
-        // Walk through the values
-        for (OWLIndividual ocd : opentry.getValue()) {
-          // get the value an Set the Property Value
-          if (ocd instanceof OWLNamedIndividual) {
-            OWLNamedIndividual oncd = (OWLNamedIndividual) ocd;
-            ObjectPropHolder ph = new ObjectPropHolder(oncd.getIRI(), cf, propUri, instance);
-            unresolvedObjectProperties.add(ph);
-          }
+        final OWLIndividual ocd = opentry.getValue();
+        // get the value an Set the Property Value
+        if (ocd instanceof OWLNamedIndividual) {
+          OWLNamedIndividual oncd = (OWLNamedIndividual) ocd;
+          ObjectPropHolder ph = new ObjectPropHolder(oncd.getIRI(), cf, propUri, instance);
+          unresolvedObjectProperties.add(ph);
         }
       }
     }
@@ -337,25 +342,23 @@ public final class UnMarshaller {
 
 
   private void addDataProperties(OWLIndividual oi, ClassFacade cf, Object instance) {
-    Map<OWLDataPropertyExpression, Set<OWLLiteral>> dataPropertyValues =
-        oi.getDataPropertyValues(ontology);
-    for (Entry<OWLDataPropertyExpression, Set<OWLLiteral>> dpEntry : dataPropertyValues
-        .entrySet()) {
+
+    final Multimap<OWLDataPropertyExpression, OWLLiteral> dataPropertyValues =
+        EntitySearcher.getDataPropertyValues(oi, ontology);
+    for (Entry<OWLDataPropertyExpression, OWLLiteral> dpEntry : dataPropertyValues.entries()) {
 
       // retrieve current property IRI
       IRI propUri = dpEntry.getKey().asOWLDataProperty().getIRI();
 
       if (cf.hasProperty(propUri)) {
-
         // Walk through the values
-        for (OWLLiteral ocd : dpEntry.getValue()) {
-          // try to read the literal
-          Object value = readValue(ocd.getLiteral(), ocd.getDatatype().getIRI());
+        final OWLLiteral ocd = dpEntry.getValue();
+        // try to read the literal
+        Object value = readValue(ocd.getLiteral(), ocd.getDatatype().getIRI());
 
-          // Set the Property Value
-          PropertyAccessor property = cf.getProperty(propUri);
-          property.setOrAddValue(instance, value);
-        }
+        // Set the Property Value
+        PropertyAccessor property = cf.getProperty(propUri);
+        property.setOrAddValue(instance, value);
       }
     }
   }

@@ -323,7 +323,7 @@ public class Marshaller {
       ClassFacade cf = getClassFacade(o);
 
       // Individual creation
-      final IRI ontologyIri = ontology.getOntologyID().getOntologyIRI();
+      final IRI ontologyIri = ontology.getOntologyID().getOntologyIRI().get();
       final IRI individualUri = IRI.create(ontologyIri.toString(), cf.getIdString(o));
       final OWLNamedIndividual ind = factory.getOWLNamedIndividual(individualUri);
 
