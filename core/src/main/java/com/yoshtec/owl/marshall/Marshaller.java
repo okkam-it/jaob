@@ -323,8 +323,9 @@ public class Marshaller {
       ClassFacade cf = getClassFacade(o);
 
       // Individual creation
-      IRI induri = IRI.create("#" + cf.getIdString(o));
-      OWLNamedIndividual ind = factory.getOWLNamedIndividual(induri);
+      final IRI ontologyIri = ontology.getOntologyID().getOntologyIRI().get();
+      final IRI individualUri = IRI.create(ontologyIri.toString(), cf.getIdString(o));
+      final OWLNamedIndividual ind = factory.getOWLNamedIndividual(individualUri);
 
       // add the visited Object
       visitedObjects.put(o, ind);

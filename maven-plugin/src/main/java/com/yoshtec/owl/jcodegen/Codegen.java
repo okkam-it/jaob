@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
@@ -65,8 +66,8 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLProperty;
 import org.semanticweb.owlapi.model.OWLPropertyRange;
-import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
+import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -404,7 +405,8 @@ public class Codegen {
       JInterfaceProxy jinterface = getInterface(ocls);
 
       // check for multiple inheritance
-      Set<OWLClassExpression> superClasses = ocls.getSuperClasses(ontology);
+      final Set<OWLClassExpression> superClasses =
+          EntitySearcher.getSuperClasses(ocls, ontology).collect(Collectors.toSet());
       if (superClasses.size() > 1 && !this.generateInterfaces) {
         throw new CodegenException("Unable to create Classes with multiple inheritance.\n"
             + "Use Interfaces via the generateInterfaces option.");
@@ -419,7 +421,8 @@ public class Codegen {
       }
 
       // Type Hierarchy build Subclasses Connection
-      Set<OWLClassExpression> subClasses = ocls.getSubClasses(importsClosure);
+      final Set<OWLClassExpression> subClasses =
+          EntitySearcher.getSubClasses(ocls, ontology).collect(Collectors.toSet());
       String superClassFullName = jinterface.fullName();
       for (OWLClassExpression odesc : subClasses) {
 
@@ -439,7 +442,8 @@ public class Codegen {
     for (final OWLClass ocls : classesInSignature) {
       final JInterfaceProxy jinterface = getInterface(ocls);
 
-      Set<OWLClassExpression> equivalentClasses = ocls.getEquivalentClasses(importsClosure);
+      final Set<OWLClassExpression> equivalentClasses =
+          EntitySearcher.getEquivalentClasses(ocls, ontology).collect(Collectors.toSet());
       for (final OWLClassExpression odesc : equivalentClasses) {
         OWLClassExpressionVisitor vis = new OWLClassExpressionVisitor() {
 
@@ -456,7 +460,8 @@ public class Codegen {
               if (ljinterface != null) {
                 jinterface.addIntersection(ljinterface);
               } else {
-                final String msg = "Nested class Operands: Class " + ocls + " is equivalent to "
+                final String msg = "Nested class operands are not managed: Class " + ocls
+                    + " is equivalent to "
                     + desc.toString() + " ";
                 LOG.warn(msg);
                 /// throw new IllegalStateException(msg);
@@ -562,15 +567,15 @@ public class Codegen {
   }
 
   private JInterfaceProxy getInterface(OWLClassExpression desc) {
-    try {
-      // get the corresponding Java interface
-      OWLClass ocls = desc.asOWLClass();
-      final String className = OntologyUtil.getClassName(ocls);
-      String name = (ocls.isOWLThing() ? owlthingclassname : className);
-      return interfaces.get(name);
-    } catch (OWLRuntimeException e) {
-      LOG.debug("Found anonymous or strange class {}", desc);
+    if (desc.isOWLThing()) {
+      return interfaces.get(owlthingclassname);
     }
+    if (desc.isOWLClass()) {
+      final OWLClass ocls = desc.asOWLClass();
+      final String className = OntologyUtil.getClassName(ocls);
+      return interfaces.get(className);
+    }
+    LOG.warn("OWLClassExpression {} not managed", desc);
     return null;
 
   }
@@ -587,32 +592,34 @@ public class Codegen {
       this.interfaces.get(this.owlthingclassname).addProperty(prop);
     }
 
-    boolean importsClosure = true;
+    final boolean importsClosure = true;
     // Data Properties
-    Set<OWLDataProperty> dataProperties = ontology.getDataPropertiesInSignature(importsClosure);
-    for (OWLProperty<?, ?> dprop : dataProperties) {
+    for (OWLDataProperty dprop : ontology.getDataPropertiesInSignature(importsClosure)) {
       this.addProperties(dprop, PropertyType.DATA);
     }
 
     // Object Properties
-    Set<OWLObjectProperty> objectProperties =
-        ontology.getObjectPropertiesInSignature(importsClosure);
-    for (OWLProperty<?, ?> oprop : objectProperties) {
+    for (OWLObjectProperty oprop : ontology.getObjectPropertiesInSignature(importsClosure)) {
       this.addProperties(oprop, PropertyType.OBJECT);
     }
 
   }
 
-  private void addProperties(OWLProperty<?, ?> prop, PropertyType type) {
-
+  private void addProperties(OWLProperty prop, PropertyType type) {
     LOG.debug("Property: {} \t {}", prop.getClass(), prop);
     if (ignoreProperties.contains(prop.getIRI().toString())) {
       LOG.warn("\t\t Ignoring blacklisted property {}", prop.getIRI().toString());
       return;
     }
-
-    Set<OWLClassExpression> domains = prop.getDomains(ontology.getImportsClosure());
-    if (domains.isEmpty()) {
+    Set<OWLClassExpression> domains = null;
+    if (prop instanceof OWLDataProperty) {
+      domains =
+          EntitySearcher.getDomains((OWLDataProperty) prop, ontology).collect(Collectors.toSet());
+    } else if (prop instanceof OWLObjectProperty) {
+      domains =
+          EntitySearcher.getDomains((OWLObjectProperty) prop, ontology).collect(Collectors.toSet());
+    }
+    if (domains == null || domains.isEmpty()) {
       // if it is not associated with a special class than it can be used at owl:Thing level
       LOG.warn("\t\t Property {} has empty domain; bounding to default class (Thing)",
           prop.getIRI());
@@ -620,7 +627,6 @@ public class Codegen {
     } else {
       // for each included class Methods have to be generated
       for (OWLClassExpression odes : domains) {
-
         LOG.trace("\t\t Domain: {}", odes);
 
         // all associated classes will be added
@@ -634,7 +640,7 @@ public class Codegen {
     }
   }
 
-  private void addProperty(OWLProperty<?, ?> prop, JInterfaceProxy iface, PropertyType type) {
+  private void addProperty(OWLProperty prop, JInterfaceProxy iface, PropertyType type) {
 
     // adding a new Property
     final Property jprop = new Property();
@@ -650,7 +656,36 @@ public class Codegen {
     jprop.setPtype(type);
 
     // Functional?
-    final boolean functional = prop.isFunctional(ontology.getImportsClosure());
+    boolean functional = false;
+    Set<? extends OWLPropertyRange> ranges = null;
+    if (prop instanceof OWLDataProperty) {
+      final OWLDataProperty dataProp = (OWLDataProperty) prop;
+      functional = EntitySearcher.isFunctional(dataProp, ontology.getImportsClosure().stream());
+      ranges = EntitySearcher.getRanges(dataProp, ontology).collect(Collectors.toSet());
+      // has this Property a Range? look first if overridden (works up 2 levels..)
+      if (ranges.isEmpty()) {
+        ranges = EntitySearcher.getRanges(dataProp, ontology.getDirectImports().stream())
+            .collect(Collectors.toSet());
+      }
+      if (ranges.isEmpty()) {
+        ranges = EntitySearcher.getRanges(dataProp, ontology.getImportsClosure().stream())
+            .collect(Collectors.toSet());
+      }
+    } else if (prop instanceof OWLObjectProperty) {
+      final OWLObjectProperty objProp = (OWLObjectProperty) prop;
+      functional = EntitySearcher.isFunctional(objProp, ontology.getImportsClosure().stream());
+      ranges = EntitySearcher.getRanges(objProp, ontology).collect(Collectors.toSet());
+      // has this Property a Range? look first if overridden (works up 2 levels..)
+      if (ranges.isEmpty()) {
+        ranges = EntitySearcher.getRanges(objProp, ontology.getDirectImports().stream())
+            .collect(Collectors.toSet());
+      }
+      if (ranges.isEmpty()) {
+        ranges = EntitySearcher.getRanges(objProp, ontology.getImportsClosure().stream())
+            .collect(Collectors.toSet());
+      }
+    }
+
     jprop.setFunctional(functional);
     LOG.debug("  Adding Property {} [{}]{} to Class {}",
         new Object[] {propName, prop.getIRI(), (functional ? "*" : ""), iface.name()});
@@ -658,16 +693,9 @@ public class Codegen {
     // Property IRI
     jprop.setPropUri(prop.getIRI().toURI());
 
-    // has this Property a Range? look first if overridden (works up 2 levels..)
-    Set<? extends OWLPropertyRange> ranges = prop.getRanges(ontology);
-    if (ranges.isEmpty()) {
-      ranges = prop.getRanges(ontology.getDirectImports());
-    }
-    if (ranges.isEmpty()) {
-      ranges = prop.getRanges(ontology.getImportsClosure());
-    }
+
     // if there is no Range we can save some time
-    if (!ranges.isEmpty()) {
+    if (ranges != null && !ranges.isEmpty()) {
       // if it has more than one data Range than Make it a String
       // still then you are on your own in specifying the correct Syntax
       if (ranges.size() > 1 && prop instanceof OWLDataProperty) {
@@ -723,7 +751,9 @@ public class Codegen {
       }
     }
 
-    for (OWLAnnotation oa : prop.getAnnotations(ontology)) {
+    final List<OWLAnnotation> annotations =
+        EntitySearcher.getAnnotations(prop, ontology).collect(Collectors.toList());
+    for (OWLAnnotation oa : annotations) {
       OWLAnnotationObjectVisitor v = new OWLAnnotationObjectVisitor() {
 
         @Override
@@ -826,7 +856,9 @@ public class Codegen {
 
     // get further Annotation from the Ontology for the current class
 
-    for (final OWLAnnotation oannot : ocls.getAnnotations(ontology)) {
+    final List<OWLAnnotation> annotations =
+        EntitySearcher.getAnnotations(ocls, ontology).collect(Collectors.toList());
+    for (final OWLAnnotation oannot : annotations) {
       OWLAnnotationObjectVisitor v = new OWLAnnotationObjectVisitor() {
 
         @Override
