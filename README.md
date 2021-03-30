@@ -1,6 +1,11 @@
 Introduction
 ========
 
+## Badges
+
+[![license](https://img.shields.io/badge/license-LGPL_3.0-blue.svg)](https://raw.githubusercontent.com/MarquezProject/marquez/main/LICENSE)
+[![maven](https://img.shields.io/maven-central/v/org.okkam.owl/jaob.svg)](https://search.maven.org/search?q=g:org.okkam.owl%20a:jaob)
+
 // First version of README - taken from (http://wiki.yoshtec.com/jaob)
 
 While Testing some Java OWL-APIs for filling data (individuals) into OWL ontologies I figured, that it is quite hard to do so. Especially if you already have a Java object data structure in your project and just want to put out some data. As I worked with JAXB and JPA which make use of annotations, I thought to myself that such kind of binding could be used to save Java objects to ontologies. Here is the solution (in a very early alpha stage) I came up with.
