@@ -12,7 +12,7 @@
 	<name>JAOB maven plugin</name>
 
 	<properties>
-		<maven.plugin.version>3.6.0</maven.plugin.version>
+		<maven.plugin.version>3.8.1</maven.plugin.version>
 	</properties>
 	<dependencies>
 
